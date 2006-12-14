@@ -1,0 +1,36 @@
+## Interface: 20000
+## Title: Squeenix |cff7fff7f -Ace2-|r
+## Title-koKR: |CFF99FF99S|CFFFFFFFFqueenix |cff7fff7f -Ace2-|r
+## Notes: Square Minimap and more
+## Notes-koKR: 사각 미니맵과 기타 기능
+## Author: Tekkub Stoutwrithe
+## X-Credits: Ace2 conversion by ag`
+## X-RelSite-WoWI: 5026
+## X-RelSite-Curse: 4215
+## X-AceForum: 1527
+## X-Category: Map
+
+## OptionalDeps: Ace2
+
+## SavedVariables: SqueenixDB
+
+## LIBS START
+## X-Embeds: Ace2
+Libs\AceLibrary\AceLibrary.lua
+Libs\AceOO-2.0\AceOO-2.0.lua
+Libs\AceConsole-2.0\AceConsole-2.0.lua
+Libs\AceEvent-2.0\AceEvent-2.0.lua
+Libs\AceAddon-2.0\AceAddon-2.0.lua
+Libs\AceDB-2.0\AceDB-2.0.lua
+Libs\AceLocale-2.2\AceLocale-2.2.lua
+Libs\AceModuleCore-2.0\AceModuleCore-2.0.lua
+## LIBS END
+
+Squeenix.lua
+Border.lua
+Hidebuttons.lua
+Move.lua
+NESW.lua
+Scale.lua
+Scrollzoom.lua
+
