@@ -1,4 +1,5 @@
-## Interface: 20000
+## Interface: 20003
+
 ## Title: Squeenix |cff7fff7f -Ace2-|r
 ## Title-koKR: |CFF99FF99S|CFFFFFFFFqueenix |cff7fff7f -Ace2-|r
 ## Notes: Square Minimap and more
