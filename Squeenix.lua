@@ -1,37 +1,21 @@
 
 
-local L = AceLibrary("AceLocale-2.2"):new("Squeenix")
-Squeenix = AceLibrary("AceAddon-2.0"):new("AceDB-2.0", "AceConsole-2.0", "AceModuleCore-2.0")
-
-L:RegisterTranslations("enUS", function() return {
-	["A modular Minimap enhancing addon."] = true,
-	["Reload"] = true,
-	["Reload the minimap frame, should fix blanked out maps"] = true,
-} end)
-
-L:RegisterTranslations("koKR", function() return {
-	["A modular Minimap enhancing addon."] = "미니맵에 대한 설정 강화 애드온입니다.",
-	["Reload"] = "리로드",
-	["Reload the minimap frame, should fix blanked out maps"] = "미니맵을 리로딩 합니다. 미니맵이 검게 나타나는 현상을 해결할 수 있습니다",
-} end)
+local L = GetLocale() == "koKR" and {
+	desc = "미니맵에 대한 설정 강화 애드온입니다.",
+	reloaddesc = "reload: 미니맵을 리로딩 합니다. 미니맵이 검게 나타나는 현상을 해결할 수 있습니다",
+} or {
+	desc = "A modular Minimap enhancing addon.",
+	reloaddesc = "reload: Reload the minimap frame, should fix blanked out maps",
+}
 
 
-function Squeenix:OnInitialize()
-	self:RegisterDB("SqueenixDB")
-	self.Options = {
-		name = "Squeenix",
-		desc = L["A modular Minimap enhancing addon."],
-		type = "group",
-		args = {
-			reload = {
-				name = L["Reload"],
-				type = "execute",
-				desc = L["Reload the minimap frame, should fix blanked out maps"],
-				func = function() Minimap:SetMaskTexture("Interface\\AddOns\\Squeenix\\Mask.blp") end,
-			},
-		}
-	}
-	self:RegisterChatCommand({"/squeenix", "/squee"}, self.Options)
+Squeenix = Dongle:New("Squeenix")
+
+
+function Squeenix:Initialize()
+	self:InitializeDB("SqueenixDB2")
+	self.slash = self:InitializeSlashCommand(L.desc, "SQUEENIX", "squeenix", "squee")
+	self.slash:RegisterSlashHandler(L.reloaddesc, "^reload$", function() Minimap:SetMaskTexture("Interface\\AddOns\\Squeenix\\Mask.blp") end)
 
 	MinimapBorder:SetTexture()
 	MinimapBorderTop:Hide()
@@ -49,8 +33,17 @@ function Squeenix:OnInitialize()
 	MinimapZoomOut:ClearAllPoints()
 	GameTimeFrame:ClearAllPoints()
 	MinimapToggleButton:ClearAllPoints()
+	MiniMapBattlefieldFrame:ClearAllPoints()
+	MiniMapMeetingStoneFrame:ClearAllPoints()
+	MiniMapWorldMapButton:ClearAllPoints()
 
-	MiniMapTrackingFrame:SetPoint("RIGHT", Minimap, "TOPLEFT", 0, -10)
+	MiniMapTrackingFrame:SetPoint("RIGHT", Minimap, "TOPLEFT", 10, -10)
+
+	MiniMapBattlefieldFrame:SetPoint("TOPLEFT", Minimap, "BOTTOMLEFT", 13, 10)
+	MiniMapWorldMapButton:SetPoint("RIGHT", Minimap, "LEFT", 10, 0)
+	MiniMapWorldMapButton:SetPoint("TOP", MiniMapTrackingFrame, "BOTTOM", 0, 4)
+	MiniMapMeetingStoneFrame:SetPoint("RIGHT", Minimap, "LEFT", 10, 0)
+	MiniMapMeetingStoneFrame:SetPoint("TOP", MiniMapWorldMapButton, "BOTTOM", 0, 5)
 	MinimapZoomIn:SetPoint("LEFT", Minimap, "BOTTOMRIGHT", -10, 15)
 	MinimapZoomOut:SetPoint("TOP", Minimap, "BOTTOMRIGHT", -15, 10)
 	GameTimeFrame:SetPoint("CENTER", Minimap, "TOPRIGHT", 5, -25)
