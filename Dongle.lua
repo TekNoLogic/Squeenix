@@ -119,7 +119,7 @@ end
 ---------------------------------------------------------------------------]]
 
 local major = "Dongle-Beta0"
-local minor = tonumber(string.match("$Revision: 228 $", "(%d+)") or 1)
+local minor = tonumber(string.match("$Revision: 235 $", "(%d+)") or 1)
 
 assert(DongleStub, string.format("Dongle requires DongleStub.", major))
 assert(DongleStub and DongleStub:GetVersion() == "DongleStub-Beta0", 
@@ -213,8 +213,6 @@ function Dongle:NewModule(name, obj)
 	if not reg.modules then reg.modules = {} end
 	reg.modules[obj] = obj
 	reg.modules[name] = obj
-	table.insert(reg.modules, name)
-	table.sort(reg.modules)
 
 	return obj,name
 end
@@ -229,13 +227,12 @@ end
 
 local function ModuleIterator(t, name)
 	if not t then return end
-	local module
+	local obj
 	repeat
-		name,module = next(t, name)
+		name,obj = next(t, name)
 	until type(name) == "string" or not name
-
-	if not name then return end
-	return name, module
+	
+	return name,obj
 end
 
 function Dongle:IterateModules()
@@ -357,9 +354,10 @@ function Dongle:UnregisterMessage(msg)
 	assert(3, reg, "You must call 'UnregisterMessage' from a registered Dongle.")
 	argcheck(msg, 2, "string")
 
-	if messages[msg] then
-		messages[msg][self] = nil
-		if not next(messages[msg]) then
+	local tbl = messages[msg]
+	if tbl then
+		tbl[self] = nil
+		if not next(tbl) then
 			messages[msg] = nil
 		end
 	end
