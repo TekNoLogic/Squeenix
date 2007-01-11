@@ -28,8 +28,8 @@
   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ---------------------------------------------------------------------------]]
-local major = "DongleStub"
-local minor = tonumber(string.match("$Revision: 173 $", "(%d+)") or 1)
+local major = "DongleStub-Beta0"
+local minor = tonumber(string.match("$Revision: 221 $", "(%d+)") or 1)
 
 local g = getfenv(0)
 
@@ -37,7 +37,7 @@ if not g.DongleStub or g.DongleStub:IsNewerVersion(major, minor) then
 	local lib = setmetatable({}, {
 		__call = function(t,k) 
 			if type(t.versions) == "table" and t.versions[k] then 
-				return t.versions[k] 
+				return t.versions[k].instance
 			else
 				error("Cannot find a library with name '"..tostring(k).."'", 2)
 			end
@@ -45,60 +45,92 @@ if not g.DongleStub or g.DongleStub:IsNewerVersion(major, minor) then
 	})
 
 	function lib:IsNewerVersion(major, minor)
-		local entry = self.versions and self.versions[major]
+		local versionData = self.versions and self.versions[major]
 		
-		if not entry then return true end
-		local oldmajor,oldminor = entry:GetVersion()
+		if not versionData then return true end
+		local oldmajor,oldminor = versionData.instance:GetVersion()
 		
 		return minor > oldminor
 	end
 	
-	function lib:Register(new)
-		local major,minor = new:GetVersion()
+	local function NilCopyTable(src, dest)
+		for k,v in pairs(dest) do dest[k] = nil end
+		for k,v in pairs(src) do dest[k] = v end
+	end
+
+	function lib:Register(newInstance, activate, deactivate)
+		local major,minor = newInstance:GetVersion()
 		if not self:IsNewerVersion(major, minor) then return false end
-		local old = self.versions and self.versions[major]
-		-- Run the new libraries activation
-		if type(new.Activate) == "function" then
-			new:Activate(old)
+		if not self.versions then self.versions = {} end
+
+		local versionData = self.versions[major]
+		if not versionData then
+			-- New major version
+			versionData = {
+				["instance"] = newInstance,
+				["deactivate"] = deactivate,
+			}
+			
+			self.versions[major] = versionData
+			if type(activate) == "function" then
+				activate(newInstance)
+			end
+			return newInstance
 		end
 		
+		local oldDeactivate = versionData.deactivate
+		local oldInstance = versionData.instance
+		
+		versionData.deactivate = deactivate
+		
+		local skipCopy
+		if type(activate) == "function" then
+			 skipCopy = activate(newInstance, oldInstance)
+		end
+
 		-- Deactivate the old libary if necessary
-		if old and type(old.Deactivate) == "function" then
-			old:Deactivate(new) 
+		if type(oldDeactivate) == "function" then
+			oldDeactivate(oldInstance, newInstance)
 		end
-		
-		self.versions[major] = new
+
+		-- Re-use the old table, and discard the new one
+		if not skipCopy then
+			NilCopyTable(newInstance, oldInstance)
+		end
+		return oldInstance
 	end
 
 	function lib:GetVersion() return major,minor end
 
-	function lib:Activate(old)
-		if old then 
-			self.versions = old.versions
-		else
-			self.versions = {}
+	local function Activate(new, old)
+		if old then
+			new.versions = old.versions
 		end
-		g.DongleStub = self
+		g.DongleStub = new
 	end
 	
 	-- Actually trigger libary activation here
 	local stub = g.DongleStub or lib
-	stub:Register(lib)
+	stub:Register(lib, Activate)
 end
 
 --[[-------------------------------------------------------------------------
   Begin Library Implementation
 ---------------------------------------------------------------------------]]
 
-local major = "Dongle"
-local minor = tonumber(string.match("$Revision: 194 $", "(%d+)") or 1)
+local major = "Dongle-Beta0"
+local minor = tonumber(string.match("$Revision: 228 $", "(%d+)") or 1)
 
-assert(DongleStub, string.format("%s requires DongleStub.", major))
+assert(DongleStub, string.format("Dongle requires DongleStub.", major))
+assert(DongleStub and DongleStub:GetVersion() == "DongleStub-Beta0", 
+	string.format("Dongle requires DongleStub-Beta0.  You are using an older version.", major))
+
 if not DongleStub:IsNewerVersion(major, minor) then return end
 
-Dongle = {}
+local Dongle = {}
 local methods = {
-	"RegisterEvent", "UnregisterEvent", "UnregisterAllEvents", "TriggerEvent",
+	"RegisterEvent", "UnregisterEvent", "UnregisterAllEvents",
+	"RegisterMessage", "UnregisterMessage", "UnregisterAllMessages", "TriggerMessage",
 	"EnableDebug", "Print", "PrintF", "Debug", "DebugF",
 	"InitializeDB",
 	"InitializeSlashCommand",
@@ -112,6 +144,8 @@ local loadorder = {}
 local events = {}
 local databases = {}
 local commands = {}
+local messages = {}
+
 local frame
 
 local function assert(level,condition,message)
@@ -193,24 +227,25 @@ function Dongle:HasModule(module)
 	return reg.modules[module]
 end
 
-local NIL_FUNC = function() end
+local function ModuleIterator(t, name)
+	if not t then return end
+	local module
+	repeat
+		name,module = next(t, name)
+	until type(name) == "string" or not name
+
+	if not name then return end
+	return name, module
+end
 
 function Dongle:IterateModules()
 	local reg = lookup[self]
 	assert(3, reg, "You must call 'IterateModules' from a registered Dongle.")
-	
-	if not reg.modules or not next(reg.modules) then return NIL_FUNC end
 
-	local i=1
-	return function()
-		local name = reg.modules[i]
-		if not name then return end
-		i = i + 1
-		return name, reg.modules[name]
-	end
+	return ModuleIterator, reg.modules
 end
 
-function Dongle:ADDON_LOADED(event, ...)
+local function ADDON_LOADED(event, ...)
 	for i=1, #loadqueue do
 		local obj = loadqueue[i]
 		table.insert(loadorder, obj)
@@ -219,15 +254,25 @@ function Dongle:ADDON_LOADED(event, ...)
 			safecall(obj.Initialize, obj)
 		end
 
-		if self.initialized and type(obj.Enable) == "function" then
+		if Dongle.initialized and type(obj.Enable) == "function" then
 			safecall(obj.Enable, obj)
 		end
 		loadqueue[i] = nil
 	end
 end
 
-function Dongle:PLAYER_LOGIN()
-	self.initialized = true
+local function PLAYER_LOGOUT(event)
+	self:ClearDBDefaults()
+	for k,v in pairs(registry) do
+		local obj = v.obj
+		if type(obj["Disable"]) == "function" then 
+			safecall(obj["Disable"], obj) 
+		end
+	end
+end
+
+local function PLAYER_LOGIN()
+	Dongle.initialized = true
 	for i,obj in ipairs(loadorder) do
 		if type(obj.Enable) == "function" then
 			safecall(obj.Enable, obj)
@@ -235,32 +280,16 @@ function Dongle:PLAYER_LOGIN()
 	end
 end
 
-function Dongle:TriggerEvent(event, ...)
-	argcheck(event, 2, "string")
+local function OnEvent(frame, event, ...)
 	local eventTbl = events[event]
 	if eventTbl then
 		for obj,func in pairs(eventTbl) do
 			if type(func) == "string" then
 				if type(obj[func]) == "function" then
-					safecall(obj[func], obj, event, ...) 
+					safecall(obj[func], obj, event, ...)
 				end
 			else
-				safecall(func,event,...)
-			end
-		end
-	end
-end
-
-function Dongle:OnEvent(frame, event, ...)
-	local eventTbl = events[event]
-	if eventTbl then
-		for obj,func in pairs(eventTbl) do
-			if type(func) == "string" then
-				if type(obj[func]) == "function" then
-					obj[func](obj, event, ...)
-				end
-			else
-				func(event, ...)
+				safecall(func, event, ...)
 			end
 		end
 	end
@@ -308,21 +337,57 @@ function Dongle:UnregisterAllEvents()
 	end
 end
 
-function Dongle:AdminEvents(event)
-	local method
-	if event == "PLAYER_LOGOUT" then
-		Dongle:ClearDBDefaults()
-		method = "Disable"
-	elseif event == "PLAYER_REGEN_DISABLED" then
-		method = "CombatLockdown"
-	elseif event == "PLAYER_REGEN_ENABLED" then
-		method = "CombatUnlock"
-	end
+function Dongle:RegisterMessage(msg, func)
+	local reg = lookup[self]
+	assert(3, reg, "You must call 'RegisterMessage' from a registered Dongle.")
+	argcheck(msg, 2, "string")
+	argcheck(func, 3, "string", "function", "nil")
 
-	if method then
-		for k,v in pairs(registry) do
-			local obj = v.obj
-			if obj[method] then obj[method](obj) end
+	-- Name the method the same as the event if necessary
+	if not func then func = msg end
+
+	if not messages[msg] then
+		messages[msg] = {}
+	end
+	messages[msg][self] = func
+end
+
+function Dongle:UnregisterMessage(msg)
+	local reg = lookup[self]
+	assert(3, reg, "You must call 'UnregisterMessage' from a registered Dongle.")
+	argcheck(msg, 2, "string")
+
+	if messages[msg] then
+		messages[msg][self] = nil
+		if not next(messages[msg]) then
+			messages[msg] = nil
+		end
+	end
+end
+
+function Dongle:UnregisterAllMessages()
+	assert(3, lookup[self], "You must call 'UnregisterAllMessages' from a registered Dongle.")
+
+	for msg,tbl in pairs(messages) do
+		tbl[self] = nil
+		if not next(tbl) then
+			messages[msg] = nil
+		end
+	end
+end
+
+function Dongle:TriggerMessage(msg, ...)
+	argcheck(msg, 2, "string")
+	local msgTbl = messages[msg]
+	if not msgTbl then return end
+
+	for obj,func in pairs(msgTbl) do
+		if type(func) == "string" then
+			if type(obj[func]) == "function" then
+				safecall(obj[func], obj, msg, ...) 
+			end
+		else
+			safecall(func, msg, ...)
 		end
 	end
 end
@@ -497,7 +562,7 @@ function Dongle:InitializeDB(name, defaults, defaultProfile)
 	local db,profileCreated = initdb(self, name, defaults, defaultProfile)
 
 	if profileCreated then
-		Dongle:TriggerEvent("DONGLE_PROFILE_CREATED", db, self, db.sv_name, db.profileKey)	
+		Dongle:TriggerMessage("DONGLE_PROFILE_CREATED", db, self, db.sv_name, db.profileKey)	
 	end
 	return db
 end
@@ -603,10 +668,10 @@ function Dongle.SetProfile(db, name)
     db.profileKey = name
 
 	if profileCreated then
-		Dongle:TriggerEvent("DONGLE_PROFILE_CREATED", db, db.parent, db.sv_name, db.profileKey)	
+		Dongle:TriggerMessage("DONGLE_PROFILE_CREATED", db, db.parent, db.sv_name, db.profileKey)	
 	end
 	
-	Dongle:TriggerEvent("DONGLE_PROFILE_CHANGED", db, db.parent, db.sv_name, db.profileKey)
+	Dongle:TriggerMessage("DONGLE_PROFILE_CHANGED", db, db.parent, db.sv_name, db.profileKey)
 end
 
 function Dongle.GetProfiles(db, t)
@@ -631,7 +696,7 @@ function Dongle.DeleteProfile(db, name)
 	end
 
 	db.sv.profiles[name] = nil
-	Dongle:TriggerEvent("DONGLE_PROFILE_DELETED", db, db.parent, db.sv_name, name)
+	Dongle:TriggerMessage("DONGLE_PROFILE_DELETED", db, db.parent, db.sv_name, name)
 end
 
 function Dongle.CopyProfile(db, name)
@@ -645,7 +710,7 @@ function Dongle.CopyProfile(db, name)
 	local source = db.sv.profiles[name]
 
 	copyDefaults(profile, source, true)
-	Dongle:TriggerEvent("DONGLE_PROFILE_COPIED", db, db.parent, db.sv_name, name, db.profileKey)
+	Dongle:TriggerMessage("DONGLE_PROFILE_COPIED", db, db.parent, db.sv_name, name, db.profileKey)
 end
 
 function Dongle.ResetProfile(db)
@@ -659,7 +724,7 @@ function Dongle.ResetProfile(db)
 	if db.defaults and db.defaults.profile then
 		copyDefaults(profile, db.defaults.profile)
 	end
-	Dongle:TriggerEvent("DONGLE_PROFILE_RESET", db, db.parent, db.sv_name, db.profileKey)
+	Dongle:TriggerMessage("DONGLE_PROFILE_RESET", db, db.parent, db.sv_name, db.profileKey)
 end
 
 
@@ -675,9 +740,9 @@ function Dongle.ResetDB(db, defaultProfile)
 	local parent = db.parent
 
 	initdb(parent, db.sv_name, db.defaults, defaultProfile, db)
-	Dongle:TriggerEvent("DONGLE_DATABASE_RESET", db, parent, db.sv_name, db.profileKey)
-	Dongle:TriggerEvent("DONGLE_PROFILE_CREATED", db, db.parent, db.sv_name, db.profileKey)
-	Dongle:TriggerEvent("DONGLE_PROFILE_CHANGED", db, db.parent, db.sv_name, db.profileKey)
+	Dongle:TriggerMessage("DONGLE_DATABASE_RESET", db, parent, db.sv_name, db.profileKey)
+	Dongle:TriggerMessage("DONGLE_PROFILE_CREATED", db, db.parent, db.sv_name, db.profileKey)
+	Dongle:TriggerMessage("DONGLE_PROFILE_CHANGED", db, db.parent, db.sv_name, db.profileKey)
 	return db
 end
 
@@ -693,7 +758,7 @@ local function OnSlashCommand(cmd, cmd_line)
 				if type(tbl.handler) == "string" then
 					cmd.parent[tbl.handler](cmd.parent, string.match(cmd_line, pattern))
 				else
-					tbl.handler(cmd.parent, string.match(cmd_line, pattern))
+					tbl.handler(string.match(cmd_line, pattern))
 				end
 				return
 			end
@@ -728,10 +793,15 @@ function Dongle:InitializeSlashCommand(desc, name, ...)
 	end
 
 	genv.SlashCmdList[name] = function(...) OnSlashCommand(cmd, ...) end
+
+	commands[cmd] = true
+
 	return cmd
 end
 
 function Dongle.RegisterSlashHandler(cmd, desc, pattern, handler)
+	assert(3, commands[cmd], "You must call 'RegisterSlashHandler' from a Dongle slash command object.")
+
 	argcheck(desc, 2, "string")
 	argcheck(pattern, 3, "string")
 	argcheck(handler, 4, "function", "string")
@@ -746,6 +816,8 @@ function Dongle.RegisterSlashHandler(cmd, desc, pattern, handler)
 end
 
 function Dongle.PrintUsage(cmd)
+	assert(3, commands[cmd], "You must call 'PrintUsage' from a Dongle slash command object.")
+
 	local usage = cmd.desc.."\n".."/"..table.concat(cmd.slashes, ", /")..":\n"
 	if cmd.patterns then
 		local descs = {}
@@ -766,7 +838,7 @@ end
 
 function Dongle:GetVersion() return major,minor end
 
-function Dongle:Activate(old)
+local function Activate(self, old)
 	if old then
 		self.registry = old.registry or registry
 		self.lookup = old.lookup or lookup
@@ -775,6 +847,7 @@ function Dongle:Activate(old)
 		self.events = old.events or events
 		self.databases = old.databases or databases
 		self.commands = old.commands or commands
+		self.messages = old.messages or messages
 
 		registry = self.registry
 		lookup = self.lookup
@@ -783,9 +856,14 @@ function Dongle:Activate(old)
 		events = self.events
 		databases = self.databases
 		commands = self.commands
+		messages = self.messages
 
 		frame = old.frame
-		self.registry[major].obj = self
+
+		local reg = self.registry[major]
+		reg.obj = self
+		lookup[self] = reg
+		lookup[major] = reg
 	else
 		self.registry = registry
 		self.lookup = lookup
@@ -794,6 +872,7 @@ function Dongle:Activate(old)
 		self.events = events
 		self.databases = databases
 		self.commands = commands
+		self.messages = messages
 
 		local reg = {obj = self, name = "Dongle"}
 		registry[major] = reg
@@ -806,14 +885,12 @@ function Dongle:Activate(old)
 	end
 
 	self.frame = frame
-	frame:SetScript("OnEvent", function(...) self:OnEvent(...) end)
+	frame:SetScript("OnEvent", OnEvent)
 
 	-- Register for events using Dongle itself
-	self:RegisterEvent("ADDON_LOADED")
-	self:RegisterEvent("PLAYER_LOGIN")
-	self:RegisterEvent("PLAYER_LOGOUT", "AdminEvents")
-	self:RegisterEvent("PLAYER_REGEN_ENABLED", "AdminEvents")
-	self:RegisterEvent("PLAYER_REGEN_DISABLED", "AdminEvents")
+	self:RegisterEvent("ADDON_LOADED", ADDON_LOADED)
+	self:RegisterEvent("PLAYER_LOGIN", PLAYER_LOGIN)
+	self:RegisterEvent("PLAYER_LOGOUT", PLAYER_LOGOUT)
 
 	-- Convert all the modules handles
 	for name,obj in pairs(registry) do
@@ -828,11 +905,18 @@ function Dongle:Activate(old)
 			db[method] = self[method]
 		end
 	end
+	
+	-- Convert all slash command methods
+	for cmd in pairs(commands) do
+		for idx,method in ipairs(slashCmdMethods) do
+			cmd[method] = self[method]
+		end
+	end
 end
 
-function Dongle:Deactivate(new)
-	lookup[self] = nil
+local function Deactivate(self, new)
 	self:UnregisterAllEvents()
+	lookup[self] = nil
 end
 
-DongleStub:Register(Dongle)
+DongleStub:Register(Dongle, Activate, Deactivate)
