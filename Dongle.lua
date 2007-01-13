@@ -119,7 +119,7 @@ end
 ---------------------------------------------------------------------------]]
 
 local major = "Dongle-Beta0"
-local minor = tonumber(string.match("$Revision: 235 $", "(%d+)") or 1)
+local minor = tonumber(string.match("$Revision: 239 $", "(%d+)") or 1)
 
 assert(DongleStub, string.format("Dongle requires DongleStub.", major))
 assert(DongleStub and DongleStub:GetVersion() == "DongleStub-Beta0", 
@@ -313,9 +313,10 @@ function Dongle:UnregisterEvent(event)
 	assert(3, reg, "You must call 'UnregisterEvent' from a registered Dongle.")
 	argcheck(event, 2, "string")
 
-	if events[event] then
-		events[event][self] = nil
-		if not next(events[event]) then
+	local tbl = events[event]
+	if tbl then
+		tbl[self] = nil
+		if not next(tbl) then
 			events[event] = nil
 			frame:UnregisterEvent(event)
 		end
