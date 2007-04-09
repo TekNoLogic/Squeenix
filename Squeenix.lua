@@ -9,7 +9,7 @@ local L = GetLocale() == "koKR" and {
 }
 
 
-Squeenix = DongleStub("Dongle-Beta1"):New("Squeenix")
+Squeenix = DongleStub("Dongle-1.0-RC3"):New("Squeenix")
 
 
 function Squeenix:Initialize()
