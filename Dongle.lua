@@ -153,8 +153,8 @@ end
   Begin Library Implementation
 ---------------------------------------------------------------------------]]
 
-local major = "Dongle-1.0-RC3"
-local minor = tonumber(string.match("$Revision: 293 $", "(%d+)") or 1)
+local major = "Dongle-1.0"
+local minor = tonumber(string.match("$Revision: 303 $", "(%d+)") or 1)
 
 assert(DongleStub, string.format("Dongle requires DongleStub.", major))
 
@@ -516,12 +516,15 @@ local function printFHelp(obj, method, header, frame, msg, ...)
 	assert(4, reg, string.format(L["MUST_CALLFROM_REGISTERED"], method))
 
 	local name = reg.name
+	local success,txt
 
 	if header then
-		msg = msg .. "|cFF33FF99%s|r: "
+		msg = "|cFF33FF99%s|r: " .. msg
+		success,txt = pcall(string.format, msg, name, ...)
+	else
+		success,txt = pcall(string.format, msg, ...)
 	end
 
-	local success,txt = pcall(string.format, msg, name, ...)
 	if success then
 		frame:AddMessage(txt)
 	else
@@ -735,9 +738,9 @@ local function initdb(parent, name, defaults, defaultProfile, olddb)
 	end
 
 	-- Generate the database keys for each section
-	local char = string.format("%s of %s", UnitName("player"), GetRealmName())
+	local char = string.format("%s - %s", UnitName("player"), GetRealmName())
 	local realm = GetRealmName()
-	local class = UnitClass("player")
+	local class = select(2, UnitClass("player"))
 	local race = select(2, UnitRace("player"))
 	local faction = UnitFactionGroup("player")
 	local factionrealm = string.format("%s - %s", faction, realm)
@@ -789,7 +792,7 @@ end
 function Dongle:InitializeDB(name, defaults, defaultProfile)
 	local reg = lookup[self]
 	assert(3, reg, string.format(L["MUST_CALLFROM_REGISTERED"], "InitializeDB"))
-	argcheck(name, 2, "string")
+	argcheck(name, 2, "string", "table")
 	argcheck(defaults, 3, "table", "nil")
 	argcheck(defaultProfile, 4, "string", "nil")
 
@@ -938,6 +941,9 @@ function Dongle.RegisterNamespace(db, name, defaults)
 	end
 
 	local newDB = initdb(db, sv.namespaces[name], defaults, db.keys.profile)
+	-- Remove the :SetProfile method from newDB
+	newDB.SetProfile = nil
+
 	if not db.children then db.children = {} end
 	table.insert(db.children, newDB)
 	return newDB
@@ -1108,10 +1114,12 @@ end
 
 local function PLAYER_LOGIN()
 	Dongle.initialized = true
-	for i,obj in ipairs(loadorder) do
+	for i=1, #loadorder do
+		local obj = loadorder[i]
 		if type(obj.Enable) == "function" then
 			safecall(obj.Enable, obj)
 		end
+		loadorder[i] = nil
 	end
 end
 
@@ -1123,11 +1131,25 @@ local function ADDON_LOADED(event, ...)
 		if type(obj.Initialize) == "function" then
 			safecall(obj.Initialize, obj)
 		end
-
-		if Dongle.initialized and type(obj.Enable) == "function" then
-			safecall(obj.Enable, obj)
-		end
 		loadqueue[i] = nil
+	end
+
+	if not Dongle.initialized then
+		if type(IsLoggedIn) == "function" then
+			Dongle.initialized = IsLoggedIn()
+		else
+			Dongle.initialized = ChatFrame1.defaultLanguage
+		end
+	end
+
+	if Dongle.initialized then
+		for i=1, #loadorder do
+			local obj = loadorder[i]
+			if type(obj.Enable) == "function" then
+				safecall(obj.Enable, obj)
+			end
+			loadorder[i] = nil
+		end
 	end
 end
 
@@ -1135,7 +1157,16 @@ local function DONGLE_PROFILE_CHANGED(msg, db, parent, sv_name, profileKey)
 	local children = db.children
 	if children then
 		for i,namespace in ipairs(children) do
-			namespace:SetProfile(profileKey)
+			local old = namespace.profile
+			local defaults = namespace.defaults and namespace.defaults.profile
+
+			if defaults then
+				-- Remove the defaults from the old profile
+				removeDefaults(old, defaults)
+			end
+
+			namespace.profile = nil
+			namespace.keys["profile"] = profileKey
 		end
 	end
 end
