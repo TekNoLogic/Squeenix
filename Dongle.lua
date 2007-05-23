@@ -29,7 +29,7 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ---------------------------------------------------------------------------]]
 local major = "DongleStub"
-local minor = tonumber(string.match("$Revision: 314 $", "(%d+)") or 1)
+local minor = tonumber(string.match("$Revision: 313 $", "(%d+)") or 1)
 
 local g = getfenv(0)
 
@@ -155,9 +155,13 @@ end
 ---------------------------------------------------------------------------]]
 
 local major = "Dongle-1.0"
-local minor = tonumber(string.match("$Revision: 676 $", "(%d+)") or 1)
+local minor = tonumber(string.match("$Revision: 371 $", "(%d+)") or 1) + 500
+-- ** IMPORTANT NOTE **
+-- Due to some issues we had previously with Dongle revision numbers
+-- we need to artificially inflate the minor revision number, to ensure
+-- we load sequentially.
 
-assert(DongleStub, string.format("Dongle requires DongleStub.", major))
+assert(DongleStub, string.format("%s requires DongleStub.", major))
 
 if not DongleStub:IsNewerVersion(major, minor) then return end
 
@@ -183,7 +187,7 @@ local messages = {}
 local frame
 
 --[[-------------------------------------------------------------------------
-  Message Localization
+	Message Localization
 ---------------------------------------------------------------------------]]
 
 local L = {
@@ -191,7 +195,7 @@ local L = {
 	["ALREADY_REGISTERED"] = "A Dongle with the name '%s' is already registered.",
 	["BAD_ARGUMENT"] = "bad argument #%d to '%s' (%s expected, got %s)",
 	["BAD_ARGUMENT_DB"] = "bad argument #%d to '%s' (DongleDB expected)",
-	["CANNOT_DELETE_ACTIVE_PROFILE"] = "You cannot delete your active profile.  Change profiles, then attempt to delete.",
+	["CANNOT_DELETE_ACTIVE_PROFILE"] = "You cannot delete your active profile. Change profiles, then attempt to delete.",
 	["DELETE_NONEXISTANT_PROFILE"] = "You cannot delete a non-existant profile.",
 	["MUST_CALLFROM_DBOBJECT"] = "You must call '%s' from a Dongle database object.",
 	["MUST_CALLFROM_REGISTERED"] = "You must call '%s' from a registered Dongle.",
@@ -199,7 +203,7 @@ local L = {
 	["PROFILE_DOES_NOT_EXIST"] = "Profile '%s' doesn't exist.",
 	["REPLACE_DEFAULTS"] = "You are attempting to register defaults with a database that already contains defaults.",
 	["SAME_SOURCE_DEST"] = "Source/Destination profile cannot be the same profile.",
-	["EVENT_REGISTER_SPECIAL"] = "You cannot register for the '%s' event.  Use the '%s' method instead.",
+	["EVENT_REGISTER_SPECIAL"] = "You cannot register for the '%s' event. Use the '%s' method instead.",
 	["Unknown"] = "Unknown",
 	["INJECTDB_USAGE"] = "Usage: DongleCmd:InjectDBCommands(db, ['copy', 'delete', 'list', 'reset', 'set'])",
 	["DBSLASH_PROFILE_COPY_DESC"] = "profile copy <name> - Copies profile <name> into your current profile.",
@@ -216,7 +220,7 @@ local L = {
 }
 
 --[[-------------------------------------------------------------------------
-  Utility functions for Dongle use
+	Utility functions for Dongle use
 ---------------------------------------------------------------------------]]
 
 local function assert(level,condition,message)
@@ -247,7 +251,7 @@ local function safecall(func,...)
 end
 
 --[[-------------------------------------------------------------------------
-  Dongle constructor, and DongleModule system
+	Dongle constructor, and DongleModule system
 ---------------------------------------------------------------------------]]
 
 function Dongle:New(name, obj)
@@ -318,7 +322,7 @@ function Dongle:IterateModules()
 end
 
 --[[-------------------------------------------------------------------------
-  Event registration system
+	Event registration system
 ---------------------------------------------------------------------------]]
 
 local function OnEvent(frame, event, ...)
@@ -400,7 +404,7 @@ function Dongle:IsEventRegistered(event)
 end
 
 --[[-------------------------------------------------------------------------
-  Inter-Addon Messaging System
+	Inter-Addon Messaging System
 ---------------------------------------------------------------------------]]
 
 function Dongle:RegisterMessage(msg, func)
@@ -467,7 +471,7 @@ function Dongle:IsMessageRegistered(msg)
 end
 
 --[[-------------------------------------------------------------------------
-  Debug and Print utility functions
+	Debug and Print utility functions
 ---------------------------------------------------------------------------]]
 
 function Dongle:EnableDebug(level, frame)
@@ -583,7 +587,7 @@ function Dongle:DebugF(level, ...)
 end
 
 --[[-------------------------------------------------------------------------
-  Database System
+	Database System
 ---------------------------------------------------------------------------]]
 
 local dbMethods = {
@@ -875,6 +879,7 @@ function Dongle.SetProfile(db, name)
 
 	db.profile = nil
 	db.keys["profile"] = name
+	db.sv.profileKeys[db.keys.char] = name
 
 	Dongle:TriggerMessage("DONGLE_PROFILE_CHANGED", db, db.parent, db.sv_name, db.keys.profile)
 end
@@ -944,7 +949,7 @@ end
 
 function Dongle.ResetDB(db, defaultProfile)
 	assert(3, databases[db], string.format(L["MUST_CALLFROM_DBOBJECT"], "ResetDB"))
-    argcheck(defaultProfile, 2, "nil", "string")
+		argcheck(defaultProfile, 2, "nil", "string")
 
 	local sv = db.sv
 	for k,v in pairs(sv) do
@@ -961,7 +966,7 @@ end
 
 function Dongle.RegisterNamespace(db, name, defaults)
 	assert(3, databases[db], string.format(L["MUST_CALLFROM_DBOBJECT"], "RegisterNamespace"))
-    argcheck(name, 2, "string")
+		argcheck(name, 2, "string")
 	argcheck(defaults, 3, "nil", "string")
 
 	local sv = db.sv
@@ -980,7 +985,7 @@ function Dongle.RegisterNamespace(db, name, defaults)
 end
 
 --[[-------------------------------------------------------------------------
-  Slash Command System
+	Slash Command System
 ---------------------------------------------------------------------------]]
 
 local slashCmdMethods = {
@@ -1129,7 +1134,7 @@ function Dongle.InjectDBCommands(cmd, db, ...)
 end
 
 --[[-------------------------------------------------------------------------
-  Internal Message/Event Handlers
+	Internal Message/Event Handlers
 ---------------------------------------------------------------------------]]
 
 local function PLAYER_LOGOUT(event)
@@ -1202,7 +1207,7 @@ local function DONGLE_PROFILE_CHANGED(msg, db, parent, sv_name, profileKey)
 end
 
 --[[-------------------------------------------------------------------------
-  DongleStub required functions and registration
+	DongleStub required functions and registration
 ---------------------------------------------------------------------------]]
 
 function Dongle:GetVersion() return major,minor end
@@ -1218,8 +1223,6 @@ local function Activate(self, old)
 		commands = old.commands or commands
 		messages = old.messages or messages
 		frame = old.frame or CreateFrame("Frame")
-
-		registry[major].obj = self
 	else
 		frame = CreateFrame("Frame")
 		local reg = {obj = self, name = "Dongle"}
@@ -1238,17 +1241,18 @@ local function Activate(self, old)
 	self.messages = messages
 	self.frame = frame
 
-	local reg = self.registry[major]
-	lookup[self] = reg
-	lookup[major] = reg
-
 	frame:SetScript("OnEvent", OnEvent)
 
+	local lib = old or self
+
+	-- Lets make sure the lookup table has us.
+	lookup[lib] = lookup[major]
+
 	-- Register for events using Dongle itself
-	self:RegisterEvent("ADDON_LOADED", ADDON_LOADED)
-	self:RegisterEvent("PLAYER_LOGIN", PLAYER_LOGIN)
-	self:RegisterEvent("PLAYER_LOGOUT", PLAYER_LOGOUT)
-	self:RegisterMessage("DONGLE_PROFILE_CHANGED", DONGLE_PROFILE_CHANGED)
+	lib:RegisterEvent("ADDON_LOADED", ADDON_LOADED)
+	lib:RegisterEvent("PLAYER_LOGIN", PLAYER_LOGIN)
+	lib:RegisterEvent("PLAYER_LOGOUT", PLAYER_LOGOUT)
+	lib:RegisterMessage("DONGLE_PROFILE_CHANGED", DONGLE_PROFILE_CHANGED)
 
 	-- Convert all the modules handles
 	for name,obj in pairs(registry) do
@@ -1272,9 +1276,11 @@ local function Activate(self, old)
 	end
 end
 
-local function Deactivate(self, new)
-	self:UnregisterAllEvents()
-	lookup[self] = nil
+-- Lets nuke any Dongle deactivate functions, please
+-- I hate nasty hacks.
+if DongleStub.versions and DongleStub.versions[major] then
+	local reg = DongleStub.versions[major]
+	reg.deactivate = nil
 end
 
-Dongle = DongleStub:Register(Dongle, Activate, Deactivate)
+Dongle = DongleStub:Register(Dongle, Activate)
