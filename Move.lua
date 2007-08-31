@@ -21,44 +21,39 @@ L:RegisterTranslations("koKR", function() return {
 local move = Squeenix:NewModule("Movement")
 
 
-function move:OnInitialize()
-	local self = self
-	self.db = Squeenix:AcquireDBNamespace("Movement")
-	Squeenix:RegisterDefaults("Movement", "profile", {lock = true})
-
-	Squeenix.Options.args.lock = {
-		name = L["Lock movement"],
-		type = "toggle",
-		desc = L["Lock/unlock minimap movement"],
-		mask = {[true] = L["Locked"], [false] = L["Unlocked"]},
-		get = function() return self.db.profile.lock end,
-		set = function(v) self.db.profile.lock = v end,
-	}
-	Squeenix.Options.args.resetpos = {
-		name = L["Reset Position"],
-		type = "execute",
-		desc = L["Reset the minimap to it's default position"],
-		func = function()
-			self.db.profile.x, self.db.profile.y = nil, nil
-			Minimap:ClearAllPoints()
-			Minimap:SetPoint("CENTER", "MinimapCluster", "TOP", 9, -92)
-		end,
-		disabled = function() return not self.db.profile.x end,
-	}
+function move:Initialize()
+	self.db = Squeenix.db:RegisterNamespace("Movement")
+	self.db:RegisterDefaults({profile={
+		lock = true,
+		x = 9, y = -92,
+		anchor = "TOP",
+		anchorframe = "MinimapCluster",
+	}})
 
 	Minimap:SetMovable(true)
 	Minimap:EnableMouse(true)
 	Minimap:RegisterForDrag("LeftButton")
-	Minimap:SetScript("OnDragStart", function() if not self.db.profile.lock then Minimap:StartMoving() end end)
-	Minimap:SetScript("OnDragStop", function()
+	Minimap:SetScript("OnDragStart", function(frame) if not self.db.profile.lock then frame:StartMoving() end end)
+	Minimap:SetScript("OnDragStop", function(frame)
 		if self.db.profile.lock then return end
-		Minimap:StopMovingOrSizing()
-		self.db.profile.x, self.db.profile.y = Minimap:GetCenter()
+		frame:StopMovingOrSizing()
+		self.db.profile.x, self.db.profile.y = frame:GetCenter()
+		self.db.profile.anchorframe, self.db.profile.anchor = "UIParent", "BOTTOMLEFT"
 	end)
 
 	Minimap:ClearAllPoints()
-	if self.db.profile.x then Minimap:SetPoint("CENTER", "UIParent", "BOTTOMLEFT", self.db.profile.x, self.db.profile.y)
-	else Minimap:SetPoint("CENTER", "MinimapCluster", "TOP", 9, -92) end
+	Minimap:SetPoint("CENTER", self.db.profile.anchorframe, self.db.profile.anchor, self.db.profile.x, self.db.profile.y)
+
+	Squeenix.slash:RegisterSlashHandler("move: Lock/unlock minimap movement", "^move$", function()
+		self.db.profile.lock = not self.db.profile.lock
+		self:Print("Minimap movement "..(self.db.profile.lock and "|cffff0000locked" or "|cff00ff00unlocked"))
+	end)
+	Squeenix.slash:RegisterSlashHandler("resetpos: Resets the minimap to the default location", "^resetpos$", function()
+		self.db.profile.x, self.db.profile.y, self.db.profile.anchorframe, self.db.profile.anchor = nil, nil, nil, nil
+		Minimap:ClearAllPoints()
+		Minimap:SetPoint("CENTER", self.db.profile.anchorframe, self.db.profile.anchor, self.db.profile.x, self.db.profile.y)
+		self:Print("Minimap position reset")
+	end)
 end
 
 

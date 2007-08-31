@@ -7,10 +7,6 @@
 ## Version: Alpha
 ## X-Website: http://code.google.com/p/tekkub-wow/
 ## X-Email: tekkub-wow@googlegroups.com
-## X-Credits: Ace2 conversion by ag`
-## X-RelSite-WoWI: 5026
-## X-RelSite-Curse: 4215
-## X-AceForum: 1527
 ## X-Category: Map
 
 ## OptionalDeps: Dongle, tekErr
@@ -18,6 +14,8 @@
 ## SavedVariables: SqueenixDB2
 
 Dongle.lua
+OptionHouse.lua
+WidgetWarlock.lua
 
 Squeenix.lua
 Border.lua
@@ -27,3 +25,4 @@ NESW.lua
 Scale.lua
 Scrollzoom.lua
 
+OHFrame.lua

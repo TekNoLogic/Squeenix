@@ -13,7 +13,7 @@ Squeenix = DongleStub("Dongle-1.0"):New("Squeenix")
 
 
 function Squeenix:Initialize()
-	self:InitializeDB("SqueenixDB2")
+	self.db = self:InitializeDB("SqueenixDB2")
 	self.slash = self:InitializeSlashCommand(L.desc, "SQUEENIX", "squeenix", "squee")
 	self.slash:RegisterSlashHandler(L.reloaddesc, "^reload$", function() Minimap:SetMaskTexture("Interface\\AddOns\\Squeenix\\Mask.blp") end)
 
@@ -29,23 +29,30 @@ function Squeenix:Initialize()
 	MinimapZoneText:SetPoint("TOP", MinimapZoneTextButton, "TOP", 9, 1)
 
 	MiniMapTrackingFrame:ClearAllPoints()
-	MinimapZoomIn:ClearAllPoints()
-	MinimapZoomOut:ClearAllPoints()
-	GameTimeFrame:ClearAllPoints()
-	MinimapToggleButton:ClearAllPoints()
-	MiniMapBattlefieldFrame:ClearAllPoints()
-	MiniMapMeetingStoneFrame:ClearAllPoints()
-	MiniMapWorldMapButton:ClearAllPoints()
-
 	MiniMapTrackingFrame:SetPoint("RIGHT", Minimap, "TOPLEFT", 5, -10)
 
+
+	MiniMapBattlefieldFrame:ClearAllPoints()
 	MiniMapBattlefieldFrame:SetPoint("TOPLEFT", Minimap, "BOTTOMLEFT", 13, 10)
+
+	MiniMapWorldMapButton:ClearAllPoints()
 	MiniMapWorldMapButton:SetPoint("RIGHT", Minimap, "LEFT", 5, 0)
 	MiniMapWorldMapButton:SetPoint("TOP", MiniMapTrackingFrame, "BOTTOM", 0, 4)
---~ 	MiniMapMeetingStoneFrame:SetPoint("RIGHT", Minimap, "LEFT", 5, 0)
+
+	MiniMapMeetingStoneFrame:ClearAllPoints()
 	MiniMapMeetingStoneFrame:SetPoint("TOPLEFT", MiniMapWorldMapButton, "BOTTOMLEFT", 0, 5)
+
+	MinimapZoomIn:ClearAllPoints()
 	MinimapZoomIn:SetPoint("LEFT", Minimap, "BOTTOMRIGHT", -10, 5)
+
+	MinimapZoomOut:ClearAllPoints()
 	MinimapZoomOut:SetPoint("TOP", Minimap, "BOTTOMRIGHT", -15, 0)
+
+	GameTimeFrame:ClearAllPoints()
 	GameTimeFrame:SetPoint("CENTER", Minimap, "TOPRIGHT", 5, -25)
+
+	MinimapToggleButton:ClearAllPoints()
 	MinimapToggleButton:SetPoint("LEFT", MinimapZoneText, "RIGHT", 0, 0)
 end
+
+
