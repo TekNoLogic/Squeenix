@@ -11,6 +11,9 @@
 
 ## OptionalDeps: Dongle, tekErr
 
+## LoadManagers: AddonLoader
+## X-LoadOn-Always: delayed
+
 ## SavedVariables: SqueenixDB2
 
 Dongle.lua
