@@ -28,8 +28,8 @@ function Squeenix:Initialize()
 
 	MinimapZoneText:SetPoint("TOP", MinimapZoneTextButton, "TOP", 9, 1)
 
-	MiniMapTrackingFrame:ClearAllPoints()
-	MiniMapTrackingFrame:SetPoint("RIGHT", Minimap, "TOPLEFT", 5, -10)
+	MiniMapTracking:ClearAllPoints()
+	MiniMapTracking:SetPoint("RIGHT", Minimap, "TOPLEFT", 5, -10)
 
 
 	MiniMapBattlefieldFrame:ClearAllPoints()
