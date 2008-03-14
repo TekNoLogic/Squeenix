@@ -37,7 +37,7 @@ function Squeenix:Initialize()
 
 	MiniMapWorldMapButton:ClearAllPoints()
 	MiniMapWorldMapButton:SetPoint("RIGHT", Minimap, "LEFT", 5, 0)
-	MiniMapWorldMapButton:SetPoint("TOP", MiniMapTrackingFrame, "BOTTOM", 0, 4)
+	MiniMapWorldMapButton:SetPoint("TOP", MiniMapTracking, "BOTTOM", 0, 4)
 
 	MiniMapMeetingStoneFrame:ClearAllPoints()
 	MiniMapMeetingStoneFrame:SetPoint("TOPLEFT", MiniMapWorldMapButton, "BOTTOMLEFT", 0, 5)
