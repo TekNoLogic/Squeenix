@@ -28,4 +28,4 @@ NESW.lua
 Scale.lua
 Scrollzoom.lua
 
-OHFrame.lua
+Config.lua
