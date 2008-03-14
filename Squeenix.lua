@@ -62,6 +62,7 @@ function Squeenix:ADDON_LOADED()
 	self:HideButtons()
 	self:ShowCompass()
 	self:SetPosition()
+	self:SetScale()
 
 	f:UnregisterEvent("ADDON_LOADED")
 	self.ADDON_LOADED = nil

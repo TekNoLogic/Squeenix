@@ -46,19 +46,20 @@ frame:SetScript("OnShow", function(frame)
 	showcompass:SetChecked(not Squeenix.db.hidecompass)
 
 
---~ 	local threshslider, threshslidertext, threshcontainer = tekslider.new(frame, "Break Threshold: "..ControlFreak.db.char.breakthreshold.." sec", 0, 10, "LEFT", frame, "TOP", GAP, 0)
---~ 	threshcontainer:SetPoint("TOP", lockpos, "TOP", 0, 0)
---~ 	threshslider.tiptext = "Time (in seconds) before spell breaks to unfade frame."
---~ 	threshslider:SetValue(ControlFreak.db.char.breakthreshold)
---~ 	threshslider:SetValueStep(1)
---~ 	threshslider:SetScript("OnValueChanged", function()
---~ 		ControlFreak.db.char.breakthreshold = threshslider:GetValue()
---~ 		threshslidertext:SetText("Break Threshold: "..ControlFreak.db.char.breakthreshold.." sec")
---~ 	end)
+	local scaleslider, scaleslidertext, scalecontainer = tekslider.new(frame, string.format("Scale: %.2f", Squeenix.db.scale or 1), 0.5, 2, "LEFT", frame, "TOP", GAP, 0)
+	scalecontainer:SetPoint("TOP", showcompass, "TOP", 0, 0)
+	scaleslider.tiptext = "Set the minimap scale."
+	scaleslider:SetValue(Squeenix.db.scale or 1)
+	scaleslider:SetValueStep(.05)
+	scaleslider:SetScript("OnValueChanged", function(self)
+		Squeenix.db.scale = self:GetValue()
+		scaleslidertext:SetText(string.format("Scale: %.2f", Squeenix.db.scale or 1))
+		Squeenix:SetScale()
+	end)
 
 
 --~ 	local alpha = math.floor(ControlFreak.db.char.alpha*100 + .5)
---~ 	local alphaslider, alphaslidertext = tekslider.new(frame, "Alpha: "..alpha.."%", "0%", "100%", "TOP", threshcontainer, "BOTTOM", 0, -GAP)
+--~ 	local alphaslider, alphaslidertext = tekslider.new(frame, "Alpha: "..alpha.."%", "0%", "100%", "TOP", scalecontainer, "BOTTOM", 0, -GAP)
 --~ 	alphaslider.tiptext = "Alpha level to fade frame to when focus is controlled, dead, or not set."
 --~ 	alphaslider:SetValue(ControlFreak.db.char.alpha)
 --~ 	alphaslider:SetValueStep(0.05)
