@@ -47,9 +47,8 @@ border:SetFrameLevel(1)
 
 
 function Squeenix:SetBorder(v)
---~ 	if v then self.db.profile.style = v end
---~ 	border:SetBackdrop(borders[self.db.profile.style])
-	border:SetBackdrop(borders["Rounded"])
+	if v then self.db.border = v end
+	border:SetBackdrop(borders[self.db.border or "Rounded"])
 	border:SetBackdropColor(0,0,0,1)
 end
 
