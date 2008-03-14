@@ -58,6 +58,7 @@ function Squeenix:ADDON_LOADED()
 	MinimapToggleButton:SetPoint("LEFT", MinimapZoneText, "RIGHT", 0, 0)
 
 	self:SetBorder()
+	self:HideButtons()
 
 	f:UnregisterEvent("ADDON_LOADED")
 	self.ADDON_LOADED = nil
