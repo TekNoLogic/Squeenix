@@ -1,6 +1,7 @@
 
 
 if not Squeenix then return end
+local Squeenix = Squeenix
 
 
 ----------------------
@@ -8,6 +9,7 @@ if not Squeenix then return end
 ----------------------
 
 local tekcheck = LibStub("tekKonfig-Checkbox")
+local tekbutton = LibStub("tekKonfig-Button")
 local tekslider = LibStub("tekKonfig-Slider")
 local GAP = 8
 
@@ -27,8 +29,15 @@ frame:SetScript("OnShow", function(frame)
 	local lockpos = tekcheck.new(frame, nil, "Lock minimap", "TOPLEFT", subtitle, "BOTTOMLEFT", -2, -GAP)
 	lockpos.tiptext = "Locks the minimap to prevent accidental movement"
 	local checksound = lockpos:GetScript("OnClick")
-	lockpos:SetScript("OnClick", function(self) checksound(self); Squeenix.db.locked = not Squeenix.db.locked end)
-	lockpos:SetChecked(Squeenix.db.locked)
+	lockpos:SetScript("OnClick", function(self) checksound(self); Squeenix.db.unlocked = not Squeenix.db.unlocked; Squeenix:SetPosition() end)
+	lockpos:SetChecked(not Squeenix.db.unlocked)
+
+
+	local resetpos = tekbutton.new_small(frame, "TOP", lockpos, "CENTER", 0, 11)
+	resetpos:SetPoint("RIGHT", -16, 0)
+	resetpos:SetText("Reset")
+	resetpos.tiptext = "Reset the minimap to the default position"
+	resetpos:SetScript("OnClick", function(self) Squeenix.db.x, Squeenix.db.y, Squeenix.db.anchorframe, Squeenix.db.anchor = nil; Squeenix:SetPosition() end)
 
 
 	local showcompass = tekcheck.new(frame, nil, "Show full compass", "TOPLEFT", lockpos, "BOTTOMLEFT", 0, -GAP)
