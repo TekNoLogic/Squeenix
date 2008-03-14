@@ -1,3 +1,4 @@
+if true then return end
 local L = AceLibrary("AceLocale-2.2"):new("SqueenixHide")
 L:RegisterTranslations("enUS", function() return {
 	["Hidden"] = true,

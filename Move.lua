@@ -1,3 +1,4 @@
+if true then return end
 local L = AceLibrary("AceLocale-2.2"):new("SqueenixMovement")
 L:RegisterTranslations("enUS", function() return {
 	["Lock movement"] = true,

@@ -1,3 +1,4 @@
+if true then return end
 local L = AceLibrary("AceLocale-2.2"):new("SqueenixScale")
 L:RegisterTranslations("enUS", function() return {
 	["Scale map"] = true,
