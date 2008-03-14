@@ -31,10 +31,10 @@ frame:SetScript("OnShow", function(frame)
 	lockpos:SetChecked(Squeenix.db.locked)
 
 
---~ 	local showtip = tekcheck.new(frame, nil, "Show tooltip", "TOPLEFT", lockpos, "BOTTOMLEFT", 0, -GAP)
---~ 	showtip.tiptext = "Show help tooltip on hover"
---~ 	showtip:SetScript("OnClick", function(self) checksound(self); ControlFreak.db.char.showtooltip = not ControlFreak.db.char.showtooltip end)
---~ 	showtip:SetChecked(ControlFreak.db.char.showtooltip)
+	local showcompass = tekcheck.new(frame, nil, "Show full compass", "TOPLEFT", lockpos, "BOTTOMLEFT", 0, -GAP)
+	showcompass.tiptext = "Add 'ESW' compass directions to the map"
+	showcompass:SetScript("OnClick", function(self) checksound(self); Squeenix.db.hidecompass = not Squeenix.db.hidecompass; Squeenix:ShowCompass() end)
+	showcompass:SetChecked(not Squeenix.db.hidecompass)
 
 
 --~ 	local threshslider, threshslidertext, threshcontainer = tekslider.new(frame, "Break Threshold: "..ControlFreak.db.char.breakthreshold.." sec", 0, 10, "LEFT", frame, "TOP", GAP, 0)
