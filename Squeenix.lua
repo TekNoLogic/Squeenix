@@ -53,6 +53,9 @@ function Squeenix:Initialize()
 
 	MinimapToggleButton:ClearAllPoints()
 	MinimapToggleButton:SetPoint("LEFT", MinimapZoneText, "RIGHT", 0, 0)
+
+	self:SetBorder()
+	self.Initialize = nil
 end
 
 

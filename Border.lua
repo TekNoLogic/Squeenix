@@ -19,10 +19,15 @@ local borders = {
 }
 
 
-local border = Squeenix:NewModule("Squeenix-Border")
+local border = CreateFrame("Button", nil, Minimap)
+border:SetPoint("TOPLEFT","Minimap",-5,5)
+border:SetPoint("BOTTOMRIGHT","Minimap",5,-5)
+
+border:SetFrameStrata("BACKGROUND")
+border:SetFrameLevel(1)
 
 
-function border:Initialize()
+--~ function Squeenix:InitializeBorder()
 --~ 	self.db = Squeenix:AcquireDBNamespace("Border")
 --~ 	Squeenix:RegisterDefaults("Border", "profile", {style = "Square"})
 
@@ -38,22 +43,14 @@ function border:Initialize()
 --~ 		set = "SetBorder",
 --~ 		validate = borderList,
 --~ 	}
-
-	self.frame = CreateFrame("Button", nil, Minimap)
-	self.frame:SetPoint("TOPLEFT","Minimap",-5,5)
-	self.frame:SetPoint("BOTTOMRIGHT","Minimap",5,-5)
-
-	self:SetBorder()
-	self.frame:SetFrameStrata("BACKGROUND")
-	self.frame:SetFrameLevel(1)
-end
+--~ end
 
 
-function border:SetBorder(v)
+function Squeenix:SetBorder(v)
 --~ 	if v then self.db.profile.style = v end
---~ 	self.frame:SetBackdrop(borders[self.db.profile.style])
-	self.frame:SetBackdrop(borders["Rounded"])
-	self.frame:SetBackdropColor(0,0,0,1)
+--~ 	border:SetBackdrop(borders[self.db.profile.style])
+	border:SetBackdrop(borders["Rounded"])
+	border:SetBackdropColor(0,0,0,1)
 end
 
 
