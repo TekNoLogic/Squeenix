@@ -32,18 +32,19 @@ function Squeenix:ADDON_LOADED()
 	MinimapZoneText:SetPoint("TOP", MinimapZoneTextButton, "TOP", 9, 1)
 
 	MiniMapTracking:ClearAllPoints()
-	MiniMapTracking:SetPoint("RIGHT", Minimap, "TOPLEFT", 5, -10)
-
+	MiniMapTracking:SetPoint("BOTTOMRIGHT", Minimap, "TOPLEFT", 5, -18)
 
 	MiniMapBattlefieldFrame:ClearAllPoints()
-	MiniMapBattlefieldFrame:SetPoint("TOPLEFT", Minimap, "BOTTOMLEFT", 13, 10)
+	MiniMapBattlefieldFrame:SetPoint("TOPLEFT", Minimap, "BOTTOMLEFT", 13, 0)
 
 	MiniMapWorldMapButton:ClearAllPoints()
-	MiniMapWorldMapButton:SetPoint("RIGHT", Minimap, "LEFT", 5, 0)
-	MiniMapWorldMapButton:SetPoint("TOP", MiniMapTracking, "BOTTOM", 0, 4)
+	MiniMapWorldMapButton:SetPoint("TOPRIGHT", Minimap, "TOPLEFT", 5, -22)
 
 	MiniMapMeetingStoneFrame:ClearAllPoints()
-	MiniMapMeetingStoneFrame:SetPoint("TOPLEFT", MiniMapWorldMapButton, "BOTTOMLEFT", 0, 5)
+	MiniMapMeetingStoneFrame:SetPoint("TOPRIGHT", Minimap, "TOPLEFT", 5, -53)
+
+	MiniMapVoiceChatFrame:ClearAllPoints()
+	MiniMapVoiceChatFrame:SetPoint("BOTTOMRIGHT", Minimap, "BOTTOMLEFT", 5, 20)
 
 	MinimapZoomIn:ClearAllPoints()
 	MinimapZoomIn:SetPoint("LEFT", Minimap, "BOTTOMRIGHT", -10, 5)
@@ -55,7 +56,7 @@ function Squeenix:ADDON_LOADED()
 	GameTimeFrame:SetPoint("CENTER", Minimap, "TOPRIGHT", 5, -25)
 
 	MinimapToggleButton:ClearAllPoints()
-	MinimapToggleButton:SetPoint("LEFT", MinimapZoneText, "RIGHT", 0, 0)
+	MinimapToggleButton:SetPoint("LEFT", MinimapZoneText, "RIGHT", -2, 0)
 
 	self:SetBorder()
 	self:HideButtons()
