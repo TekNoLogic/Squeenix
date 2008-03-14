@@ -19,6 +19,7 @@
 Dongle.lua
 OptionHouse.lua
 WidgetWarlock.lua
+tekKonfig\tekKonfig.xml
 
 Squeenix.lua
 Border.lua
