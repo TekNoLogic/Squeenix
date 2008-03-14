@@ -9,8 +9,6 @@
 ## X-Email: tekkub-wow@googlegroups.com
 ## X-Category: Map
 
-## OptionalDeps: Dongle, tekErr, OptionHouse
-
 ## LoadManagers: AddonLoader
 ## X-LoadOn-Always: delayed
 
