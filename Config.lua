@@ -1,5 +1,4 @@
 
-
 if not Squeenix then return end
 local Squeenix = Squeenix
 
@@ -44,6 +43,12 @@ frame:SetScript("OnShow", function(frame)
 	showcompass.tiptext = "Add 'ESW' compass directions to the map"
 	showcompass:SetScript("OnClick", function(self) checksound(self); Squeenix.db.hidecompass = not Squeenix.db.hidecompass; Squeenix:ShowCompass() end)
 	showcompass:SetChecked(not Squeenix.db.hidecompass)
+
+
+	local scrollzoom = tekcheck.new(frame, nil, "Use mousewheel zoom", "TOPLEFT", showcompass, "BOTTOMLEFT", 0, -GAP)
+	scrollzoom.tiptext = "Zoom the minimap using the mouse scroll wheel"
+	scrollzoom:SetScript("OnClick", function(self) checksound(self); Squeenix.db.noscrollzoom = not Squeenix.db.noscrollzoom end)
+	scrollzoom:SetChecked(not Squeenix.db.noscrollzoom)
 
 
 	local scaleslider, scaleslidertext, scalecontainer = tekslider.new(frame, string.format("Scale: %.2f", Squeenix.db.scale or 1), 0.5, 2, "LEFT", frame, "TOP", GAP, 0)
