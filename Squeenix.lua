@@ -9,13 +9,16 @@ local L = GetLocale() == "koKR" and {
 }
 
 
-Squeenix = DongleStub("Dongle-1.0"):New("Squeenix")
+Squeenix = {}
+local Squeenix, f = Squeenix, CreateFrame("Frame")
+f:SetScript("OnEvent", function(self, event, ...) if Squeenix[event] then return Squeenix[event](Squeenix, event, ...) end end)
+f:RegisterEvent("ADDON_LOADED")
 
 
-function Squeenix:Initialize()
-	self.db = self:InitializeDB("SqueenixDB2")
-	self.slash = self:InitializeSlashCommand(L.desc, "SQUEENIX", "squeenix", "squee")
-	self.slash:RegisterSlashHandler(L.reloaddesc, "^reload$", function() Minimap:SetMaskTexture("Interface\\AddOns\\Squeenix\\Mask.blp") end)
+function Squeenix:ADDON_LOADED()
+	SqueenixDB2 = SqueenixDB2 or {}
+	self.db = SqueenixDB2
+--~ 	self.slash:RegisterSlashHandler(L.reloaddesc, "^reload$", function() Minimap:SetMaskTexture("Interface\\AddOns\\Squeenix\\Mask.blp") end)
 
 	MinimapBorder:SetTexture()
 	MinimapBorderTop:Hide()
@@ -55,7 +58,9 @@ function Squeenix:Initialize()
 	MinimapToggleButton:SetPoint("LEFT", MinimapZoneText, "RIGHT", 0, 0)
 
 	self:SetBorder()
-	self.Initialize = nil
+
+	f:UnregisterEvent("ADDON_LOADED")
+	self.ADDON_LOADED = nil
 end
 
 

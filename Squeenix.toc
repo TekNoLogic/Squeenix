@@ -16,17 +16,13 @@
 
 ## SavedVariables: SqueenixDB2
 
-Dongle.lua
-OptionHouse.lua
-WidgetWarlock.lua
 tekKonfig\tekKonfig.xml
 
 Squeenix.lua
+Config.lua
 Border.lua
 Hidebuttons.lua
 Move.lua
 NESW.lua
 Scale.lua
 Scrollzoom.lua
-
-Config.lua
