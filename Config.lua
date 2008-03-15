@@ -45,14 +45,20 @@ frame:SetScript("OnShow", function(frame)
 	showcompass:SetChecked(not Squeenix.db.hidecompass)
 
 
+	local refresh = tekbutton.new_small(frame, "TOP", showcompass, "CENTER", 0, 11)
+	refresh:SetPoint("RIGHT", -16, 0)
+	refresh:SetText("Refresh")
+	refresh.tiptext = "Refresh the minimap, should fix blanked out maps."
+	refresh:SetScript("OnClick", function(self) Minimap:SetMaskTexture("Interface\\AddOns\\Squeenix\\Mask.blp") end)
+
+
 	local scrollzoom = tekcheck.new(frame, nil, "Use mousewheel zoom", "TOPLEFT", showcompass, "BOTTOMLEFT", 0, -GAP)
 	scrollzoom.tiptext = "Zoom the minimap using the mouse scroll wheel"
 	scrollzoom:SetScript("OnClick", function(self) checksound(self); Squeenix.db.noscrollzoom = not Squeenix.db.noscrollzoom end)
 	scrollzoom:SetChecked(not Squeenix.db.noscrollzoom)
 
 
-	local scaleslider, scaleslidertext, scalecontainer = tekslider.new(frame, string.format("Scale: %.2f", Squeenix.db.scale or 1), 0.5, 2, "LEFT", frame, "TOP", GAP, 0)
-	scalecontainer:SetPoint("TOP", showcompass, "TOP", 0, 0)
+	local scaleslider, scaleslidertext, scalecontainer = tekslider.new(frame, string.format("Scale: %.2f", Squeenix.db.scale or 1), 0.5, 2, "TOPLEFT", scrollzoom, "BOTTOMLEFT", 2, -GAP)
 	scaleslider.tiptext = "Set the minimap scale."
 	scaleslider:SetValue(Squeenix.db.scale or 1)
 	scaleslider:SetValueStep(.05)
@@ -61,19 +67,6 @@ frame:SetScript("OnShow", function(frame)
 		scaleslidertext:SetText(string.format("Scale: %.2f", Squeenix.db.scale or 1))
 		Squeenix:SetScale()
 	end)
-
-
---~ 	local alpha = math.floor(ControlFreak.db.char.alpha*100 + .5)
---~ 	local alphaslider, alphaslidertext = tekslider.new(frame, "Alpha: "..alpha.."%", "0%", "100%", "TOP", scalecontainer, "BOTTOM", 0, -GAP)
---~ 	alphaslider.tiptext = "Alpha level to fade frame to when focus is controlled, dead, or not set."
---~ 	alphaslider:SetValue(ControlFreak.db.char.alpha)
---~ 	alphaslider:SetValueStep(0.05)
---~ 	alphaslider:SetScript("OnValueChanged", function()
---~ 		ControlFreak.db.char.alpha = alphaslider:GetValue()
---~ 		local alpha = math.floor(ControlFreak.db.char.alpha*100 + .5)
---~ 		alphaslidertext:SetText("Alpha: "..alpha.."%")
---~ 		ControlFreak:OnUpdate(true)
---~ 	end)
 
 
 	frame:SetScript("OnShow", LibStub("tekKonfig-FadeIn").FadeIn)
@@ -89,5 +82,8 @@ InterfaceOptions_AddCategory(frame)
 
 SLASH_SQUEENIX1 = "/squee"
 SLASH_SQUEENIX2 = "/squeenix"
-SlashCmdList.SQUEENIX = function() InterfaceOptionsFrame_OpenToFrame(frame) end
+SlashCmdList.SQUEENIX = function(input)
+	if input:find("refresh") then Minimap:SetMaskTexture("Interface\\AddOns\\Squeenix\\Mask.blp")
+	else InterfaceOptionsFrame_OpenToFrame(frame) end
+end
 
