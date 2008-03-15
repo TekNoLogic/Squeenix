@@ -10,6 +10,7 @@ local Squeenix = Squeenix
 local tekcheck = LibStub("tekKonfig-Checkbox")
 local tekbutton = LibStub("tekKonfig-Button")
 local tekslider = LibStub("tekKonfig-Slider")
+local tekdropdown = LibStub("tekKonfig-Dropdown")
 local GAP = 8
 
 
@@ -66,6 +67,28 @@ frame:SetScript("OnShow", function(frame)
 		Squeenix.db.scale = self:GetValue()
 		scaleslidertext:SetText(string.format("Scale: %.2f", Squeenix.db.scale or 1))
 		Squeenix:SetScale()
+	end)
+
+
+	local borderdropdown, borderdropdowntext, borderdropdowncontainer = tekdropdown.new(frame, "Border style", "TOPLEFT", scalecontainer, "BOTTOMLEFT", 0, -GAP)
+	borderdropdowntext:SetText(Squeenix.db.border or "Rounded")
+	borderdropdown.tiptext = "Change the minimap border style."
+
+	local function OnClick()
+		UIDropDownMenu_SetSelectedValue(borderdropdown, this.value)
+		borderdropdowntext:SetText(this.value)
+		Squeenix:SetBorder(this.value)
+	end
+	UIDropDownMenu_Initialize(borderdropdown, function()
+		local selected, info = UIDropDownMenu_GetSelectedValue(borderdropdown) or "Rounded", UIDropDownMenu_CreateInfo()
+
+		for name in pairs(Squeenix.borders) do
+			info.text = name
+			info.value = name
+			info.func = OnClick
+			info.checked = name == selected
+			UIDropDownMenu_AddButton(info)
+		end
 	end)
 
 
