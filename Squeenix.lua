@@ -59,3 +59,6 @@ function Squeenix:ADDON_LOADED()
 end
 
 
+-- Global function, tells others the minimap shape
+-- http://wowwiki.com/GetMinimapShape
+function GetMinimapShape() return "SQUARE" end
