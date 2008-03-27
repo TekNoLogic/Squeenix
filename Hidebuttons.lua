@@ -65,8 +65,7 @@ frame:SetScript("OnShow", function(frame)
 	end
 
 
-	frame:SetScript("OnShow", LibStub("tekKonfig-FadeIn").FadeIn)
-	LibStub("tekKonfig-FadeIn").FadeIn(frame)
+	frame:SetScript("OnShow", nil)
 end)
 
 InterfaceOptions_AddCategory(frame)
