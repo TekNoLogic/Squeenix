@@ -101,7 +101,6 @@ InterfaceOptions_AddCategory(frame)
 LibStub("tekKonfig-AboutPanel").new("Squeenix", "Squeenix")
 
 
-
 -----------------------------
 --      Slash command      --
 -----------------------------
@@ -113,3 +112,16 @@ SlashCmdList.SQUEENIX = function(input)
 	else InterfaceOptionsFrame_OpenToFrame(frame) end
 end
 
+
+----------------------------------------
+--      Quicklaunch registration      --
+----------------------------------------
+
+LibStub:GetLibrary("LibDataBroker-1.1"):NewDataObject("Squeenix", {
+	launcher = true,
+	icon = "Interface\\Icons\\INV_Gizmo_BronzeFramework_01",
+	OnClick = function()
+		if IsShiftKeyDown() then Minimap:SetMaskTexture("Interface\\AddOns\\Squeenix\\Mask.blp")
+		else InterfaceOptionsFrame_OpenToFrame(frame) end
+	end,
+})
