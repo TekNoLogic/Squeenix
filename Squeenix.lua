@@ -62,3 +62,46 @@ end
 -- Global function, tells others the minimap shape
 -- http://wowwiki.com/GetMinimapShape
 function GetMinimapShape() return "SQUARE" end
+
+
+-------------------------
+--      LDB feeds      --
+-------------------------
+
+local function GetTipAnchor(frame)
+	local x,y = frame:GetCenter()
+	if not x or not y then return "TOPLEFT", "BOTTOMLEFT" end
+	local hhalf = (x > UIParent:GetWidth()*2/3) and "RIGHT" or (x < UIParent:GetWidth()/3) and "LEFT" or ""
+	local vhalf = (y > UIParent:GetHeight()/2) and "TOP" or "BOTTOM"
+	return vhalf..hhalf, frame, (vhalf == "TOP" and "BOTTOM" or "TOP")..hhalf
+end
+
+
+local timeobj = LibStub:GetLibrary("LibDataBroker-1.1"):NewDataObject("BlizzClock", {
+	icon = "Interface\\Icons\\INV_Misc_PocketWatch_01",
+	text = "12:00",
+	OnClick = function()
+		if TimeManagerClockButton.alarmFiring then
+			PlaySound("igMainMenuQuit")
+			TimeManager_TurnOffAlarm()
+		else TimeManager_Toggle() end
+	end,
+	OnEnter = function(self)
+		GameTooltip:SetOwner(self, "ANCHOR_NONE")
+		GameTooltip:SetPoint(GetTipAnchor(self))
+
+		TimeManagerClockButton_UpdateTooltip()
+	end,
+	OnLeave = function() GameTooltip:Hide() end,
+})
+
+local elapsed = 0
+f:SetScript("OnUpdate", function(self, elap)
+	elapsed = elapsed + elap
+	if elapsed < 0.5 then return end
+
+	elapsed = 0
+	timeobj.text = GameTime_GetTime(false)
+end)
+
+
