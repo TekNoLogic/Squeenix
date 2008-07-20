@@ -118,7 +118,7 @@ end
 ----------------------------------------
 
 LibStub:GetLibrary("LibDataBroker-1.1"):NewDataObject("Squeenix", {
-	launcher = true,
+	type = "launcher",
 	icon = "Interface\\Icons\\INV_Gizmo_BronzeFramework_01",
 	OnClick = function()
 		if IsShiftKeyDown() then Minimap:SetMaskTexture("Interface\\AddOns\\Squeenix\\Mask.blp")
