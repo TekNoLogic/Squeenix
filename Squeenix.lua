@@ -77,6 +77,13 @@ local function GetTipAnchor(frame)
 end
 
 
+function GameTime_GetLocalTime(wantAMPM)
+--~ 	local dateInfo = date("*t"); -- THIS CREATES A TABLE EVERY CALL!  Bad!!!!
+	local hour, minute = date("%H"), date("%M")
+	return GameTime_GetFormattedTime(hour, minute, wantAMPM), hour, minute
+end
+
+
 local timeobj = LibStub:GetLibrary("LibDataBroker-1.1"):NewDataObject("BlizzClock", {
 	icon = "Interface\\Icons\\INV_Misc_PocketWatch_01",
 	text = "12:00",
