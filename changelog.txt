@@ -1,0 +1,6 @@
+3.0.1.2-Beta
+    Update tekKonfig for wrath
+    Forcefully fix Blizzard's icky GameTime_GetLocalTime function
+    Add LDB feed for the new clock
+    Add LDB quicklaunch button
+
