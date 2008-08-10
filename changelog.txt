@@ -1,3 +1,6 @@
+3.0.1.3-Beta
+    Fucking git-submodule
+
 3.0.1.2-Beta
     Update tekKonfig for wrath
     Forcefully fix Blizzard's icky GameTime_GetLocalTime function
