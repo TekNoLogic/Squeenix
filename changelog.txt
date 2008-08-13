@@ -1,3 +1,6 @@
+3.0.1.4-Beta
+    Update tekKonfig to live+beta version
+
 3.0.1.3-Beta
     Fucking git-submodule
 
