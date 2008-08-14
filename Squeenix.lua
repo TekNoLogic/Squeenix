@@ -80,7 +80,7 @@ end
 function GameTime_GetLocalTime(wantAMPM)
 --~ 	local dateInfo = date("*t"); -- THIS CREATES A TABLE EVERY CALL!  Bad!!!!
 	local hour, minute = date("%H"), date("%M")
-	return GameTime_GetFormattedTime(hour, minute, wantAMPM), hour, minute
+	return GameTime_GetFormattedTime(tonumber(hour), tonumber(minute), wantAMPM), hour, minute
 end
 
 
