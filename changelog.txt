@@ -1,3 +1,7 @@
+3.0.1.5-Release
+    Fix stupid time thing, why the hell does Blizzy manually construct the AM/PM shit?
+    For that matter, why the hell do people not use 24hr time?  Math too hard?
+
 3.0.1.4-Beta
     Update tekKonfig to live+beta version
 
