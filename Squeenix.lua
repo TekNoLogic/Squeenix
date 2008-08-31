@@ -43,7 +43,7 @@ function Squeenix:ADDON_LOADED()
 	MinimapZoomOut:SetPoint("TOP", Minimap, "BOTTOMRIGHT", -15, 0)
 
 	GameTimeFrame:ClearAllPoints()
-	GameTimeFrame:SetPoint("CENTER", Minimap, "TOPRIGHT", 5, -25)
+	GameTimeFrame:SetPoint("CENTER", Minimap, "TOPRIGHT", 5, -20)
 
 	MinimapToggleButton:ClearAllPoints()
 	MinimapToggleButton:SetPoint("LEFT", MinimapZoneText, "RIGHT", -2, 0)
