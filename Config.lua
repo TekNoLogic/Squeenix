@@ -98,9 +98,6 @@ end)
 InterfaceOptions_AddCategory(frame)
 
 
-LibStub("tekKonfig-AboutPanel").new("Squeenix", "Squeenix")
-
-
 -----------------------------
 --      Slash command      --
 -----------------------------

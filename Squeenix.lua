@@ -54,6 +54,8 @@ function Squeenix:ADDON_LOADED()
 	self:SetPosition()
 	self:SetScale()
 
+	LibStub("tekKonfig-AboutPanel").new("Squeenix", "Squeenix")
+
 	f:UnregisterEvent("ADDON_LOADED")
 	self.ADDON_LOADED = nil
 end
