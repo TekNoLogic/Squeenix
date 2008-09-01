@@ -79,10 +79,11 @@ local function GetTipAnchor(frame)
 end
 
 
-function GameTime_GetLocalTime(wantAMPM)
---~ 	local dateInfo = date("*t"); -- THIS CREATES A TABLE EVERY CALL!  Bad!!!!
-	local hour, minute = date("%H"), date("%M")
-	return GameTime_GetFormattedTime(tonumber(hour), tonumber(minute), wantAMPM), hour, minute
+if not IS_WRATH_BUILD then
+	function GameTime_GetLocalTime(wantAMPM)
+		local hour, minute = date("%H"), date("%M")
+		return GameTime_GetFormattedTime(tonumber(hour), tonumber(minute), wantAMPM), hour, minute
+	end
 end
 
 
