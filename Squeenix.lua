@@ -91,12 +91,14 @@ local timeobj = LibStub:GetLibrary("LibDataBroker-1.1"):NewDataObject("BlizzCloc
 	icon = "Interface\\Icons\\INV_Misc_PocketWatch_01",
 	text = "12:00",
 	OnClick = function()
+		if not IsAddOnLoaded("Blizzard_TimeManager") then LoadAddOn("Blizzard_TimeManager") end
 		if TimeManagerClockButton.alarmFiring then
 			PlaySound("igMainMenuQuit")
 			TimeManager_TurnOffAlarm()
 		else TimeManager_Toggle() end
 	end,
 	OnEnter = function(self)
+		if not IsAddOnLoaded("Blizzard_TimeManager") then LoadAddOn("Blizzard_TimeManager") end
 		GameTooltip:SetOwner(self, "ANCHOR_NONE")
 		GameTooltip:SetPoint(GetTipAnchor(self))
 
