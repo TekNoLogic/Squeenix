@@ -1,3 +1,8 @@
+3.0.1.7-Release
+    Load Blizzard_TimeManager when needed
+    Blizzy memory leak has been fixed in Wrath
+    Fix config subpanel order
+
 3.0.1.6-Release
     Fix dropdown in config panel on Wrath
     Tweak GameTimeFrame location
