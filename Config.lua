@@ -1,3 +1,4 @@
+if not IS_WRATH_BUILD then InterfaceOptionsFrame_OpenToCategory = InterfaceOptionsFrame_OpenToFrame end
 
 if not Squeenix then return end
 local Squeenix = Squeenix
@@ -18,7 +19,7 @@ local GAP = 8
 --      Panel      --
 ---------------------
 
-local frame = CreateFrame("Frame", nil, UIParent)
+local frame = CreateFrame("Frame", nil, InterfaceOptionsFramePanelContainer)
 frame.name = "Squeenix"
 frame:Hide()
 frame:SetScript("OnShow", function(frame)
@@ -106,7 +107,7 @@ SLASH_SQUEENIX1 = "/squee"
 SLASH_SQUEENIX2 = "/squeenix"
 SlashCmdList.SQUEENIX = function(input)
 	if input:find("refresh") then Minimap:SetMaskTexture("Interface\\AddOns\\Squeenix\\Mask.blp")
-	else InterfaceOptionsFrame_OpenToFrame(frame) end
+	else InterfaceOptionsFrame_OpenToCategory(frame) end
 end
 
 
@@ -119,6 +120,6 @@ LibStub:GetLibrary("LibDataBroker-1.1"):NewDataObject("Squeenix", {
 	icon = "Interface\\Icons\\INV_Gizmo_BronzeFramework_01",
 	OnClick = function()
 		if IsShiftKeyDown() then Minimap:SetMaskTexture("Interface\\AddOns\\Squeenix\\Mask.blp")
-		else InterfaceOptionsFrame_OpenToFrame(frame) end
+		else InterfaceOptionsFrame_OpenToCategory(frame) end
 	end,
 })

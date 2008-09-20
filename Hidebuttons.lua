@@ -36,7 +36,7 @@ end
 --      Panel      --
 ---------------------
 
-local frame = CreateFrame("Frame", nil, UIParent)
+local frame = CreateFrame("Frame", nil, InterfaceOptionsFramePanelContainer)
 frame.name = "Minimap buttons"
 frame.parent = "Squeenix"
 frame:Hide()
