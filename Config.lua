@@ -1,4 +1,3 @@
-if not IS_WRATH_BUILD then InterfaceOptionsFrame_OpenToCategory = InterfaceOptionsFrame_OpenToFrame end
 
 if not Squeenix then return end
 local Squeenix = Squeenix

@@ -79,14 +79,6 @@ local function GetTipAnchor(frame)
 end
 
 
-if not IS_WRATH_BUILD then
-	function GameTime_GetLocalTime(wantAMPM)
-		local hour, minute = date("%H"), date("%M")
-		return GameTime_GetFormattedTime(tonumber(hour), tonumber(minute), wantAMPM), hour, minute
-	end
-end
-
-
 local timeobj = LibStub:GetLibrary("LibDataBroker-1.1"):NewDataObject("BlizzClock", {
 	icon = "Interface\\Icons\\INV_Misc_PocketWatch_01",
 	text = "12:00",
