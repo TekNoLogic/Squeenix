@@ -8,7 +8,7 @@ if not Squeenix then return end
 
 local Squeenix = Squeenix
 local tekcheck = LibStub("tekKonfig-Checkbox")
-local frames = {MinimapToggleButton = "close button", GameTimeFrame = "day/night frame", MinimapZoneTextButton = "zone text", MiniMapWorldMapButton = "world map", MiniMapVoiceChatFrame = "voice chat", MiniMapTracking = "tracking"}
+local frames = {MinimapToggleButton = "close button", GameTimeFrame = "calendar", MinimapZoneTextButton = "zone text", MiniMapWorldMapButton = "world map", MiniMapVoiceChatFrame = "voice chat", MiniMapTracking = "tracking"}
 local GAP = 8
 
 
