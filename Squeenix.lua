@@ -79,15 +79,21 @@ local function GetTipAnchor(frame)
 end
 
 
+local ICON1 = "Interface\\Icons\\INV_Misc_PocketWatch_01"
+local ICON2 = "Interface\\Icons\\INV_Misc_QuestionMark"
 local timeobj = LibStub:GetLibrary("LibDataBroker-1.1"):NewDataObject("BlizzClock", {
-	icon = "Interface\\Icons\\INV_Misc_PocketWatch_01",
+	icon = ICON1,
 	text = "12:00",
 	OnClick = function()
-		if not IsAddOnLoaded("Blizzard_TimeManager") then LoadAddOn("Blizzard_TimeManager") end
-		if TimeManagerClockButton.alarmFiring then
-			PlaySound("igMainMenuQuit")
-			TimeManager_TurnOffAlarm()
-		else TimeManager_Toggle() end
+		if IsShiftKeyDown() then
+			GameTimeFrame_OnClick(GameTimeFrame)
+		else
+			if not IsAddOnLoaded("Blizzard_TimeManager") then LoadAddOn("Blizzard_TimeManager") end
+			if TimeManagerClockButton.alarmFiring then
+				PlaySound("igMainMenuQuit")
+				TimeManager_TurnOffAlarm()
+			else TimeManager_Toggle() end
+		end
 	end,
 	OnEnter = function(self)
 		if not IsAddOnLoaded("Blizzard_TimeManager") then LoadAddOn("Blizzard_TimeManager") end
@@ -95,6 +101,13 @@ local timeobj = LibStub:GetLibrary("LibDataBroker-1.1"):NewDataObject("BlizzCloc
 		GameTooltip:SetPoint(GetTipAnchor(self))
 
 		TimeManagerClockButton_UpdateTooltip()
+		GameTooltip:AddLine("Shift-click to open calendar.")
+		local pending = CalendarGetNumPendingInvites()
+		if pending > 0 then
+			GameTooltip:AddLine(" ")
+			GameTooltip:AddLine("You have "..pending.." pending event invite"..(pending > 1 and "s" or ""), 1, 1, 1)
+		end
+		GameTooltip:Show()
 	end,
 	OnLeave = function() GameTooltip:Hide() end,
 })
@@ -105,7 +118,14 @@ f:SetScript("OnUpdate", function(self, elap)
 	if elapsed < 0.5 then return end
 
 	elapsed = 0
-	timeobj.text = GameTime_GetTime(false)
+	local pending = CalendarGetNumPendingInvites()
+	if pending > 0 then
+		timeobj.icon = math.floor(GetTime())%4 < 2 and ICON1 or ICON2
+		timeobj.text = GameTime_GetTime(false)..(pending == 0 and "" or " ("..pending..")")
+	else
+		timeobj.icon = ICON1
+		timeobj.text = GameTime_GetTime(false)
+	end
 end)
 
 
