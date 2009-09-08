@@ -82,6 +82,7 @@ end
 local ICON1 = "Interface\\Icons\\INV_Misc_PocketWatch_01"
 local ICON2 = "Interface\\Icons\\INV_Misc_QuestionMark"
 local timeobj = LibStub:GetLibrary("LibDataBroker-1.1"):NewDataObject("BlizzClock", {
+	type = "data source",
 	icon = ICON1,
 	text = "12:00",
 	OnClick = function()
