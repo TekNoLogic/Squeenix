@@ -1,4 +1,5 @@
 
+local THREETHREE = select(4, GetBuildInfo()) >= 30300
 
 Squeenix = {}
 local Squeenix, f = Squeenix, CreateFrame("Frame")
@@ -30,8 +31,16 @@ function Squeenix:ADDON_LOADED()
 	MiniMapWorldMapButton:ClearAllPoints()
 	MiniMapWorldMapButton:SetPoint("TOPRIGHT", Minimap, "TOPLEFT", 5, -22)
 
-	MiniMapMeetingStoneFrame:ClearAllPoints()
-	MiniMapMeetingStoneFrame:SetPoint("TOPRIGHT", Minimap, "TOPLEFT", 5, -53)
+	if THREETHREE then
+		MiniMapLFGFrame:ClearAllPoints()
+		MiniMapLFGFrame:SetPoint("TOPRIGHT", Minimap, "TOPLEFT", 5, -53)
+	else
+		MiniMapMeetingStoneFrame:ClearAllPoints()
+		MiniMapMeetingStoneFrame:SetPoint("TOPRIGHT", Minimap, "TOPLEFT", 5, -53)
+
+		MinimapToggleButton:ClearAllPoints()
+		MinimapToggleButton:SetPoint("LEFT", MinimapZoneText, "RIGHT", -2, 0)
+	end
 
 	MiniMapVoiceChatFrame:ClearAllPoints()
 	MiniMapVoiceChatFrame:SetPoint("BOTTOMRIGHT", Minimap, "BOTTOMLEFT", 5, 20)
@@ -44,9 +53,6 @@ function Squeenix:ADDON_LOADED()
 
 	GameTimeFrame:ClearAllPoints()
 	GameTimeFrame:SetPoint("CENTER", Minimap, "TOPRIGHT", 5, -20)
-
-	MinimapToggleButton:ClearAllPoints()
-	MinimapToggleButton:SetPoint("LEFT", MinimapZoneText, "RIGHT", -2, 0)
 
 	self:SetBorder()
 	self:HideButtons()
