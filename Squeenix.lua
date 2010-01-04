@@ -1,6 +1,4 @@
 
-local THREETHREE = select(4, GetBuildInfo()) >= 30300
-
 Squeenix = {}
 local Squeenix, f = Squeenix, CreateFrame("Frame")
 f:SetScript("OnEvent", function(self, event, ...) if Squeenix[event] then return Squeenix[event](Squeenix, event, ...) end end)
@@ -31,16 +29,8 @@ function Squeenix:ADDON_LOADED()
 	MiniMapWorldMapButton:ClearAllPoints()
 	MiniMapWorldMapButton:SetPoint("TOPRIGHT", Minimap, "TOPLEFT", 5, -22)
 
-	if THREETHREE then
-		MiniMapLFGFrame:ClearAllPoints()
-		MiniMapLFGFrame:SetPoint("TOPRIGHT", Minimap, "TOPLEFT", 5, -53)
-	else
-		MiniMapMeetingStoneFrame:ClearAllPoints()
-		MiniMapMeetingStoneFrame:SetPoint("TOPRIGHT", Minimap, "TOPLEFT", 5, -53)
-
-		MinimapToggleButton:ClearAllPoints()
-		MinimapToggleButton:SetPoint("LEFT", MinimapZoneText, "RIGHT", -2, 0)
-	end
+	MiniMapLFGFrame:ClearAllPoints()
+	MiniMapLFGFrame:SetPoint("TOPRIGHT", Minimap, "TOPLEFT", 5, -53)
 
 	MiniMapVoiceChatFrame:ClearAllPoints()
 	MiniMapVoiceChatFrame:SetPoint("BOTTOMRIGHT", Minimap, "BOTTOMLEFT", 5, 20)

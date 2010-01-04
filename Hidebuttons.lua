@@ -1,6 +1,4 @@
 
-local THREETHREE = select(4, GetBuildInfo()) >= 30300
-
 if not Squeenix then return end
 
 
@@ -11,7 +9,6 @@ if not Squeenix then return end
 local Squeenix = Squeenix
 local tekcheck = LibStub("tekKonfig-Checkbox")
 local frames = {GameTimeFrame = "calendar", MinimapZoneTextButton = "zone text", MiniMapWorldMapButton = "world map", MiniMapVoiceChatFrame = "voice chat", MiniMapTracking = "tracking"}
-if not THREETHREE then frames.MinimapToggleButton = "close button" end
 local GAP = 8
 
 
