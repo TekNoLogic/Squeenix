@@ -56,7 +56,12 @@ frame:SetScript("OnShow", function(frame)
 	mail:SetChecked(not Squeenix.db.hideMiniMapMailFrame)
 
 
-	local anchor = mail
+	local clock = tekcheck.new(frame, nil, "Show clock", "TOPLEFT", mail, "BOTTOMLEFT", 0, -GAP)
+	clock:SetScript("OnClick", function(self) local v = GetCVarBool("showClock") and "0" or "1"; SetCVar("showClock", v); InterfaceOptionsDisplayPanelShowClock_SetFunc(v) end)
+	clock:SetChecked(GetCVarBool("showClock"))
+
+
+	local anchor = clock
 	for name,desc in pairs(frames) do
 		local check = tekcheck.new(frame, nil, "Show "..desc, "TOPLEFT", anchor, "BOTTOMLEFT", 0, -GAP)
 		check:SetScript("OnClick", function(self) checksound(self); Squeenix.db["hide"..name] = not Squeenix.db["hide"..name]; Squeenix:HideButtons() end)
