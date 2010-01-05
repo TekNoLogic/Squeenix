@@ -8,15 +8,17 @@ if not Squeenix then return end
 
 local Squeenix = Squeenix
 local tekcheck = LibStub("tekKonfig-Checkbox")
-local frames = {GameTimeFrame = "calendar", MinimapZoneTextButton = "zone text", MiniMapWorldMapButton = "world map", MiniMapVoiceChatFrame = "voice chat", MiniMapTracking = "tracking"}
 local GAP = 8
+local frames = {GameTimeFrame = "calendar", MinimapZoneTextButton = "zone text", MiniMapWorldMapButton = "world map", MiniMapVoiceChatFrame = "voice chat", MiniMapTracking = "tracking"}
+local setupframes = {MiniMapInstanceDifficulty = "dungeon mode"}
+for i,v in pairs(frames) do setupframes[i] = v end
 
 
 ------------------------------
 --      Initialization      --
 ------------------------------
 
-local mailshow = MiniMapMailFrame.Show
+local mailshow, diffshow = MiniMapMailFrame.Show, MiniMapInstanceDifficulty.Show
 function Squeenix:HideButtons()
 	if self.db.hideMinimapZoom then MinimapZoomIn:Hide(); MinimapZoomOut:Hide() else MinimapZoomIn:Show(); MinimapZoomOut:Show() end
 	if self.db.hideMiniMapMailFrame then
@@ -26,6 +28,15 @@ function Squeenix:HideButtons()
 		MiniMapMailFrame.Show = mailshow
 		if HasNewMail() then MiniMapMailFrame:Show() end
 	end
+
+	if self.db.hideMiniMapInstanceDifficulty then
+		MiniMapInstanceDifficulty.Show = MiniMapInstanceDifficulty.Hide
+		MiniMapInstanceDifficulty:Hide()
+	else
+		MiniMapInstanceDifficulty.Show = diffshow
+		MiniMapInstanceDifficulty_OnEvent(MiniMapInstanceDifficulty)
+	end
+
 	for name in pairs(frames) do
 		if self.db["hide"..name] then _G[name]:Hide() else _G[name]:Show() end
 	end
@@ -62,7 +73,7 @@ frame:SetScript("OnShow", function(frame)
 
 
 	local anchor = clock
-	for name,desc in pairs(frames) do
+	for name,desc in pairs(setupframes) do
 		local check = tekcheck.new(frame, nil, "Show "..desc, "TOPLEFT", anchor, "BOTTOMLEFT", 0, -GAP)
 		check:SetScript("OnClick", function(self) checksound(self); Squeenix.db["hide"..name] = not Squeenix.db["hide"..name]; Squeenix:HideButtons() end)
 		check:SetChecked(not Squeenix.db["hide"..name])
