@@ -1,6 +1,5 @@
 
-if not Squeenix then return end
-local Squeenix = Squeenix
+local myname, Squeenix = ...
 
 
 local f = CreateFrame("Frame", nil, Minimap)

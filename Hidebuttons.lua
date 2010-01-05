@@ -1,12 +1,11 @@
 
-if not Squeenix then return end
+local myname, Squeenix = ...
 
 
 ----------------------
 --      Locals      --
 ----------------------
 
-local Squeenix = Squeenix
 local tekcheck = LibStub("tekKonfig-Checkbox")
 local GAP = 8
 local frames = {GameTimeFrame = "calendar", MinimapZoneTextButton = "zone text", MiniMapWorldMapButton = "world map", MiniMapVoiceChatFrame = "voice chat", MiniMapTracking = "tracking"}
