@@ -61,6 +61,13 @@ function Squeenix:ADDON_LOADED()
 end
 
 
+local rl = ReloadUI
+function ReloadUI()
+	Minimap:SetMaskTexture("Textures\\MinimapMask")
+	rl()
+end
+
+
 -- Global function, tells others the minimap shape
 -- http://wowwiki.com/GetMinimapShape
 function GetMinimapShape() return "SQUARE" end
