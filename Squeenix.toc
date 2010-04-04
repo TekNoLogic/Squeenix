@@ -4,7 +4,7 @@
 ## Notes: Square Minimap and more
 ## Notes-koKR: 사각 미니맵과 기타 기능
 ## Author: Tekkub Stoutwrithe
-## Version: Alpha
+## Version: 3.3.0.12
 ## X-Website: http://www.tekkub.net/
 ## X-Email: tekkub-wow@googlegroups.com
 ## X-Category: Map
