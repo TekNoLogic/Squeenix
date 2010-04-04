@@ -1,3 +1,9 @@
+3.3.0.12-Release
+    SPECIAL FFXIII EDITION!
+    Reset mask on reloadui, to avoid AddonLoader delayed-load oddities
+    Add instance difficulty toggler
+    Add clock toggle button
+
 3.2.0.11-Release
     Patch 3.3 compatability
 
