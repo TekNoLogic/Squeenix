@@ -46,7 +46,7 @@ function Squeenix:ADDON_LOADED()
 	GameTimeFrame:SetPoint("CENTER", Minimap, "TOPRIGHT", 5, -20)
 
 	MiniMapInstanceDifficulty:ClearAllPoints()
-	MiniMapInstanceDifficulty:SetPoint("TOPLEFT", 28, -15)
+	MiniMapInstanceDifficulty:SetPoint("TOPLEFT", Minimap, "TOPLEFT", -7, 7)
 
 	self:SetBorder()
 	self:HideButtons()
