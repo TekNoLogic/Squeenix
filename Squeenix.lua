@@ -6,7 +6,9 @@ f:SetScript("OnEvent", function(self, event, ...) if Squeenix[event] then return
 f:RegisterEvent("ADDON_LOADED")
 
 
-function Squeenix:ADDON_LOADED()
+function Squeenix:ADDON_LOADED(event, addon)
+	if addon ~= myname then return end
+
 	SqueenixDB2 = SqueenixDB2 or {}
 	self.db = SqueenixDB2
 
@@ -58,6 +60,17 @@ function Squeenix:ADDON_LOADED()
 	self:SetScale()
 
 	LibStub("tekKonfig-AboutPanel").new("Squeenix", "Squeenix")
+
+	self.ADDON_LOADED = self.ADDON_LOADED_2
+	if IsAddOnLoaded("Blizzard_TimeManager") then self:ADDON_LOADED(event, "Blizzard_TimeManager") end
+end
+
+
+function Squeenix:ADDON_LOADED_2(event, addon)
+	if addon ~= "Blizzard_TimeManager" then return end
+
+	TimeManagerClockButton:ClearAllPoints()
+	TimeManagerClockButton:SetPoint("CENTER", Minimap, "CENTER", 0, -85)
 
 	f:UnregisterEvent("ADDON_LOADED")
 	self.ADDON_LOADED = nil

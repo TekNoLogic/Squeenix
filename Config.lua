@@ -73,10 +73,10 @@ frame:SetScript("OnShow", function(frame)
 	borderdropdowntext:SetText(Squeenix.db.border or "Rounded")
 	borderdropdown.tiptext = "Change the minimap border style."
 
-	local function OnClick()
-		UIDropDownMenu_SetSelectedValue(borderdropdown, this.value)
-		borderdropdowntext:SetText(this.value)
-		Squeenix:SetBorder(this.value)
+	local function OnClick(self)
+		UIDropDownMenu_SetSelectedValue(borderdropdown, self.value)
+		borderdropdowntext:SetText(self.value)
+		Squeenix:SetBorder(self.value)
 	end
 	UIDropDownMenu_Initialize(borderdropdown, function()
 		local selected, info = UIDropDownMenu_GetSelectedValue(borderdropdown) or "Rounded", UIDropDownMenu_CreateInfo()
