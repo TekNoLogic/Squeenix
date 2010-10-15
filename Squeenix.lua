@@ -45,6 +45,9 @@ function Squeenix:ADDON_LOADED()
 	GameTimeFrame:ClearAllPoints()
 	GameTimeFrame:SetPoint("CENTER", Minimap, "TOPRIGHT", 5, -20)
 
+	GuildInstanceDifficulty:ClearAllPoints()
+	GuildInstanceDifficulty:SetPoint("TOPLEFT", Minimap, "TOPLEFT", -7, 8)
+
 	MiniMapInstanceDifficulty:ClearAllPoints()
 	MiniMapInstanceDifficulty:SetPoint("TOPLEFT", Minimap, "TOPLEFT", -7, 7)
 
