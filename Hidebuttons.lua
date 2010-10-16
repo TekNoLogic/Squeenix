@@ -8,7 +8,7 @@ local myname, Squeenix = ...
 
 local tekcheck = LibStub("tekKonfig-Checkbox")
 local GAP = 8
-local frames = {GameTimeFrame = "calendar", MinimapZoneTextButton = "zone text", MiniMapWorldMapButton = "world map", MiniMapVoiceChatFrame = "voice chat", MiniMapTracking = "tracking"}
+local frames = {GameTimeFrame = "calendar", MinimapZoneTextButton = "zone text", MiniMapWorldMapButton = "world map", MiniMapVoiceChatFrame = "voice chat", MiniMapTracking = "tracking", TimeManagerClockButton = "clock"}
 local setupframes = {MiniMapInstanceDifficulty = "dungeon mode"}
 for i,v in pairs(frames) do setupframes[i] = v end
 
@@ -66,12 +66,7 @@ frame:SetScript("OnShow", function(frame)
 	mail:SetChecked(not Squeenix.db.hideMiniMapMailFrame)
 
 
-	local clock = tekcheck.new(frame, nil, "Show clock", "TOPLEFT", mail, "BOTTOMLEFT", 0, -GAP)
-	clock:SetScript("OnClick", function(self) local v = GetCVarBool("showClock") and "0" or "1"; SetCVar("showClock", v); InterfaceOptionsDisplayPanelShowClock_SetFunc(v) end)
-	clock:SetChecked(GetCVarBool("showClock"))
-
-
-	local anchor = clock
+	local anchor = mail
 	for name,desc in pairs(setupframes) do
 		local check = tekcheck.new(frame, nil, "Show "..desc, "TOPLEFT", anchor, "BOTTOMLEFT", 0, -GAP)
 		check:SetScript("OnClick", function(self) checksound(self); Squeenix.db["hide"..name] = not Squeenix.db["hide"..name]; Squeenix:HideButtons() end)
