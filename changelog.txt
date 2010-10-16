@@ -1,3 +1,10 @@
+4.0.0.13-Beta
+    4.0 fixes
+    Clock is no longer hidden by the default UI
+    Use new map button texture, and position the buggerer betterer
+    Position new guild instance frame
+    Fix MiniMapInstanceDifficulty anchor
+
 3.3.0.12-Release
     SPECIAL FFXIII EDITION!
     Reset mask on reloadui, to avoid AddonLoader delayed-load oddities
