@@ -30,7 +30,9 @@ function Squeenix:ADDON_LOADED(event, addon)
 	MiniMapBattlefieldFrame:SetPoint("TOPLEFT", Minimap, "BOTTOMLEFT", 13, 0)
 
 	MiniMapWorldMapButton:ClearAllPoints()
-	MiniMapWorldMapButton:SetPoint("TOPRIGHT", Minimap, "TOPLEFT", 5, -22)
+	MiniMapWorldMapButton:SetPoint("BOTTOMLEFT", Minimap, "BOTTOMLEFT", -11, -8)
+	MiniMapWorldMapButton:SetNormalTexture("Interface\\Addons\\Squeenix\\WorldMapSquare.tga")
+	MiniMapWorldMapButton:SetPushedTexture("Interface\\Addons\\Squeenix\\WorldMapSquare.tga")
 
 	MiniMapLFGFrame:ClearAllPoints()
 	MiniMapLFGFrame:SetPoint("TOPRIGHT", Minimap, "TOPLEFT", 5, -53)
