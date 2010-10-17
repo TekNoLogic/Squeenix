@@ -37,7 +37,9 @@ function Squeenix:HideButtons()
 	end
 
 	for name in pairs(frames) do
-		if self.db["hide"..name] then _G[name]:Hide() else _G[name]:Show() end
+		if _G[name] then
+			if self.db["hide"..name] then _G[name]:Hide() else _G[name]:Show() end
+		end
 	end
 end
 

@@ -74,6 +74,8 @@ function Squeenix:ADDON_LOADED_2(event, addon)
 	TimeManagerClockButton:ClearAllPoints()
 	TimeManagerClockButton:SetPoint("CENTER", Minimap, "CENTER", 0, -85)
 
+	self:HideButtons()
+
 	f:UnregisterEvent("ADDON_LOADED")
 	self.ADDON_LOADED = nil
 end
