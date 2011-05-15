@@ -1,3 +1,6 @@
+4.1.0.15-Release
+    Tagging stable version
+
 4.0.0.14-Beta
     Fix button hiding bug for people that don't use AddonLoader... those poor bastards.
 
