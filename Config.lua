@@ -17,6 +17,8 @@ local GAP = 8
 --      Panel      --
 ---------------------
 
+if AddonLoader and AddonLoader.RemoveInterfaceOptions then AddonLoader:RemoveInterfaceOptions("Squeenix") end
+
 local frame = CreateFrame("Frame", nil, InterfaceOptionsFramePanelContainer)
 frame.name = "Squeenix"
 frame:Hide()
