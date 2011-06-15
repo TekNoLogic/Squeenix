@@ -35,7 +35,7 @@ frame:SetScript("OnShow", function(frame)
 
 
 	local resetpos = tekbutton.new_small(frame, "TOP", lockpos, "CENTER", 0, 11)
-	resetpos:SetPoint("RIGHT", -16, 0)
+	resetpos:SetPoint("RIGHT", frame, "CENTER", -16, 0)
 	resetpos:SetText("Reset")
 	resetpos.tiptext = "Reset the minimap to the default position"
 	resetpos:SetScript("OnClick", function(self) Squeenix.db.x, Squeenix.db.y, Squeenix.db.anchorframe, Squeenix.db.anchor = nil; Squeenix:SetPosition() end)
@@ -48,7 +48,7 @@ frame:SetScript("OnShow", function(frame)
 
 
 	local refresh = tekbutton.new_small(frame, "TOP", showcompass, "CENTER", 0, 11)
-	refresh:SetPoint("RIGHT", -16, 0)
+	refresh:SetPoint("RIGHT", frame, "CENTER", -16, 0)
 	refresh:SetText("Refresh")
 	refresh.tiptext = "Refresh the minimap, should fix blanked out maps."
 	refresh:SetScript("OnClick", function(self) Minimap:SetMaskTexture("Interface\\AddOns\\Squeenix\\Mask.blp") end)
@@ -91,6 +91,28 @@ frame:SetScript("OnShow", function(frame)
 			UIDropDownMenu_AddButton(info)
 		end
 	end)
+
+
+	-- Hide minimap buttons
+	local zoom = tekcheck.new(frame, nil, "Show zoom buttons", "TOP", subtitle, "BOTTOM", 0, -GAP)
+	zoom:SetPoint("LEFT", frame, "CENTER", GAP, 0)
+	local checksound = zoom:GetScript("OnClick")
+	zoom:SetScript("OnClick", function(self) checksound(self); Squeenix.db.hideMinimapZoom = not Squeenix.db.hideMinimapZoom; Squeenix:HideButtons() end)
+	zoom:SetChecked(not Squeenix.db.hideMinimapZoom)
+
+
+	local mail = tekcheck.new(frame, nil, "Show new mail indicator", "TOPLEFT", zoom, "BOTTOMLEFT", 0, -GAP)
+	mail:SetScript("OnClick", function(self) checksound(self); Squeenix.db.hideMiniMapMailFrame = not Squeenix.db.hideMiniMapMailFrame; Squeenix:HideButtons() end)
+	mail:SetChecked(not Squeenix.db.hideMiniMapMailFrame)
+
+
+	local anchor = mail
+	for name,desc in pairs(Squeenix.hidesetupframes) do
+		local check = tekcheck.new(frame, nil, "Show "..desc, "TOPLEFT", anchor, "BOTTOMLEFT", 0, -GAP)
+		check:SetScript("OnClick", function(self) checksound(self); Squeenix.db["hide"..name] = not Squeenix.db["hide"..name]; Squeenix:HideButtons() end)
+		check:SetChecked(not Squeenix.db["hide"..name])
+		anchor = check
+	end
 
 
 	frame:SetScript("OnShow", nil)
