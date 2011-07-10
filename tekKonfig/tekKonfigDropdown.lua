@@ -1,5 +1,5 @@
 
-local lib, oldminor = LibStub:NewLibrary("tekKonfig-Dropdown", 3)
+local lib, oldminor = LibStub:NewLibrary("tekKonfig-Dropdown", 4)
 if not lib then return end
 oldminor = oldminor or 0
 
@@ -51,6 +51,9 @@ function lib.new(parent, label, ...)
 	rtex:SetPoint("RIGHT")
 	rtex:SetTexture("Interface\\Glues\\CharacterCreate\\CharacterCreate-LabelFrame")
 	rtex:SetTexCoord(0.8046875, 1, 0, 1)
+
+	-- Doesn't do shit, but needed so that new shits in 4.2 doesn't fuck up
+	local icon = f:CreateTexture(name.."Icon", "ARTWORK")
 
 	local mtex = f:CreateTexture(nil, "ARTWORK")
 	mtex:SetWidth(115) mtex:SetHeight(64)
