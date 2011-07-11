@@ -1,3 +1,6 @@
+4.2.0.17-Beta
+    Fix border dropdown
+
 4.2.0.16-Beta
     Update for new jumbo config panels
 
