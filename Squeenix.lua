@@ -128,7 +128,14 @@ local timeobj = LibStub:GetLibrary("LibDataBroker-1.1"):NewDataObject("BlizzCloc
 		GameTooltip:SetOwner(self, "ANCHOR_NONE")
 		GameTooltip:SetPoint(GetTipAnchor(self))
 
-		TimeManagerClockButton_UpdateTooltip()
+		if TimeManagerClockButton.alarmFiring then
+			TimeManagerClockButton_UpdateTooltip()
+		else
+			GameTime_UpdateTooltip()
+			GameTooltip:AddDoubleLine("Daily quests reset in:", SecondsToTimeAbbrev(GetQuestResetTime()), nil, nil, nil, 1,1,1)
+			GameTooltip:AddLine(" ")
+			GameTooltip:AddLine(GAMETIME_TOOLTIP_TOGGLE_CLOCK)
+		end
 		GameTooltip:AddLine("Shift-click to open calendar.")
 		local pending = CalendarGetNumPendingInvites()
 		if pending > 0 then
