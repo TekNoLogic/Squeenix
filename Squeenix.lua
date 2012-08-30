@@ -132,7 +132,7 @@ local timeobj = LibStub:GetLibrary("LibDataBroker-1.1"):NewDataObject("BlizzCloc
 			TimeManagerClockButton_UpdateTooltip()
 		else
 			GameTime_UpdateTooltip()
-			GameTooltip:AddDoubleLine("Daily quests reset in:", SecondsToTimeAbbrev(GetQuestResetTime()), nil, nil, nil, 1,1,1)
+			GameTooltip:AddDoubleLine("Daily quests reset in:", string.format("%.1fhr", GetQuestResetTime()/60/60), nil, nil, nil, 1,1,1)
 			GameTooltip:AddLine(" ")
 			GameTooltip:AddLine(GAMETIME_TOOLTIP_TOGGLE_CLOCK)
 		end
