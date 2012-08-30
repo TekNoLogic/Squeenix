@@ -25,17 +25,19 @@ function Squeenix:ADDON_LOADED(event, addon)
 
 	MiniMapTracking:ClearAllPoints()
 	MiniMapTracking:SetPoint("BOTTOMRIGHT", Minimap, "TOPLEFT", 5, -18)
-
-	MiniMapBattlefieldFrame:ClearAllPoints()
-	MiniMapBattlefieldFrame:SetPoint("TOPLEFT", Minimap, "BOTTOMLEFT", 13, 0)
+	
+	-- This frame no longer exists
+	--MiniMapBattlefieldFrame:ClearAllPoints()
+	--MiniMapBattlefieldFrame:SetPoint("TOPLEFT", Minimap, "BOTTOMLEFT", 13, 0)
 
 	MiniMapWorldMapButton:ClearAllPoints()
 	MiniMapWorldMapButton:SetPoint("BOTTOMLEFT", Minimap, "BOTTOMLEFT", -11, -8)
 	MiniMapWorldMapButton:SetNormalTexture("Interface\\Addons\\Squeenix\\WorldMapSquare.tga")
 	MiniMapWorldMapButton:SetPushedTexture("Interface\\Addons\\Squeenix\\WorldMapSquare.tga")
-
-	MiniMapLFGFrame:ClearAllPoints()
-	MiniMapLFGFrame:SetPoint("TOPRIGHT", Minimap, "TOPLEFT", 5, -53)
+	
+	-- This frame no longer exists
+	--MiniMapLFGFrame:ClearAllPoints()
+	--MiniMapLFGFrame:SetPoint("TOPRIGHT", Minimap, "TOPLEFT", 5, -53)
 
 	MiniMapVoiceChatFrame:ClearAllPoints()
 	MiniMapVoiceChatFrame:SetPoint("BOTTOMRIGHT", Minimap, "BOTTOMLEFT", 5, 20)
