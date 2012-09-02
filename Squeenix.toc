@@ -1,4 +1,4 @@
-## Interface: 40200
+## Interface: 50001
 
 ## Title: Squeenix
 ## Notes: Square Minimap and more
