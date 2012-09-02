@@ -1,3 +1,8 @@
+5.0.1.18-Beta
+    5.0 updates (thanks washu214 and DArcMattr)
+    Fix time formatting
+    Add time to daily reset to the clock LDB tooltip
+
 4.2.0.17-Beta
     Fix border dropdown
 
