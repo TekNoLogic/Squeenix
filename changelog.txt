@@ -1,3 +1,6 @@
+5.0.1.19-Release
+    Tagging stable version
+
 5.0.1.18-Beta
     5.0 updates (thanks washu214 and DArcMattr)
     Fix time formatting
