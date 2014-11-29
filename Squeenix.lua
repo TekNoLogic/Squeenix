@@ -52,6 +52,10 @@ function Squeenix:ADDON_LOADED(event, addon)
 	MiniMapInstanceDifficulty:ClearAllPoints()
 	MiniMapInstanceDifficulty:SetPoint("TOPLEFT", Minimap, "TOPLEFT", -7, 7)
 
+	GarrisonLandingPageMinimapButton:ClearAllPoints()
+	GarrisonLandingPageMinimapButton:SetPoint("BOTTOMLEFT", Minimap, "BOTTOMLEFT", -22, 15)
+	GarrisonLandingPageMinimapButton:SetScale(0.75)
+
 	self:SetBorder()
 	self:HideButtons()
 	self:ShowCompass()
