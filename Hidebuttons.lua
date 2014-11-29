@@ -8,7 +8,7 @@ local myname, Squeenix = ...
 
 local tekcheck = LibStub("tekKonfig-Checkbox")
 local GAP = 8
-local frames = {GameTimeFrame = "calendar", MinimapZoneTextButton = "zone text", MiniMapWorldMapButton = "world map", MiniMapVoiceChatFrame = "voice chat", MiniMapTracking = "tracking", TimeManagerClockButton = "clock"}
+local frames = {GameTimeFrame = "calendar", MinimapZoneTextButton = "zone text", MiniMapWorldMapButton = "world map", MiniMapVoiceChatFrame = "voice chat", MiniMapTracking = "tracking", TimeManagerClockButton = "clock", GarrisonLandingPageMinimapButton = "garrison screen"}
 Squeenix.hidesetupframes = {MiniMapInstanceDifficulty = "dungeon mode", GuildInstanceDifficulty = "guild dungeon mode", MiniMapChallengeMode = "challenge mode"}
 for i,v in pairs(frames) do Squeenix.hidesetupframes[i] = v end
 
