@@ -52,6 +52,10 @@ function Squeenix:ADDON_LOADED(event, addon)
 	MiniMapInstanceDifficulty:ClearAllPoints()
 	MiniMapInstanceDifficulty:SetPoint("TOPLEFT", Minimap, "TOPLEFT", -7, 7)
 
+	GarrisonLandingPageMinimapButton:ClearAllPoints()
+	GarrisonLandingPageMinimapButton:SetPoint("BOTTOMRIGHT", Minimap, "BOTTOMLEFT", 10, 15)
+	GarrisonLandingPageMinimapButton:SetScale(0.60)
+
 	self:SetBorder()
 	self:HideButtons()
 	self:ShowCompass()
@@ -159,5 +163,3 @@ f:SetScript("OnUpdate", function(self, elap)
 		timeobj.text = GameTime_GetTime(false)
 	end
 end)
-
-
