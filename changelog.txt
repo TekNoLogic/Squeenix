@@ -1,3 +1,7 @@
+6.0.0.20-Beta
+    Move and resize GarrisonLandingPageMinimapButton (thanks DArcMattr)
+    add option to hide garrison screen button (thanks DArcMattr)
+
 5.0.1.19-Release
     Tagging stable version
 
@@ -71,4 +75,3 @@
     Forcefully fix Blizzard's icky GameTime_GetLocalTime function
     Add LDB feed for the new clock
     Add LDB quicklaunch button
-
