@@ -62,8 +62,6 @@ function Squeenix:ADDON_LOADED(event, addon)
 	self:SetPosition()
 	self:SetScale()
 
-	LibStub("tekKonfig-AboutPanel").new("Squeenix", "Squeenix")
-
 	self.ADDON_LOADED = self.ADDON_LOADED_2
 	if IsAddOnLoaded("Blizzard_TimeManager") then self:ADDON_LOADED(event, "Blizzard_TimeManager") end
 end

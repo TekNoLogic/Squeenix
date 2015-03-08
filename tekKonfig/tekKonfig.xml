@@ -6,5 +6,4 @@
 	<Script file="tekKonfigHeading.lua"/>
 	<Script file="tekKonfigSlider.lua"/>
 	<Script file="tekKonfigDropdown.lua"/>
-	<Script file="tekKonfigAboutPanel.lua"/>
 </Ui>
