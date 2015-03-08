@@ -18,9 +18,9 @@ local frames = {
 	GarrisonLandingPageMinimapButton = "garrison",
 }
 Squeenix.hidesetupframes = {
-	MiniMapInstanceDifficulty = "dungeon mode",
 	GuildInstanceDifficulty = "guild dungeon mode",
 	MiniMapChallengeMode = "challenge mode",
+	MiniMapInstanceDifficulty = "dungeon mode",
 }
 for i,v in pairs(frames) do Squeenix.hidesetupframes[i] = v end
 
@@ -31,7 +31,14 @@ for i,v in pairs(frames) do Squeenix.hidesetupframes[i] = v end
 
 local mailshow, diffshow = MiniMapMailFrame.Show, MiniMapInstanceDifficulty.Show
 function Squeenix:HideButtons()
-	if self.db.hideMinimapZoom then MinimapZoomIn:Hide(); MinimapZoomOut:Hide() else MinimapZoomIn:Show(); MinimapZoomOut:Show() end
+	if self.db.hideMinimapZoom then
+		MinimapZoomIn:Hide()
+		MinimapZoomOut:Hide()
+	else
+		MinimapZoomIn:Show()
+		MinimapZoomOut:Show()
+	end
+
 	if self.db.hideMiniMapMailFrame then
 		MiniMapMailFrame.Show = MiniMapMailFrame.Hide
 		MiniMapMailFrame:Hide()
