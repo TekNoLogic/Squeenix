@@ -15,9 +15,9 @@ local frames = {
 	MiniMapVoiceChatFrame = "voice chat",
 	MiniMapTracking = "tracking",
 	TimeManagerClockButton = "clock",
-	GarrisonLandingPageMinimapButton = "garrison",
 }
 Squeenix.hidesetupframes = {
+	GarrisonLandingPageMinimapButton = "garrison",
 	GuildInstanceDifficulty = "guild dungeon mode",
 	MiniMapChallengeMode = "challenge mode",
 	MiniMapInstanceDifficulty = "dungeon mode",
@@ -30,6 +30,10 @@ for i,v in pairs(frames) do Squeenix.hidesetupframes[i] = v end
 ------------------------------
 
 local mailshow, diffshow = MiniMapMailFrame.Show, MiniMapInstanceDifficulty.Show
+local garryparent = GarrisonLandingPageMinimapButton:GetParent()
+local garryhider = CreateFrame("Frame", nil, garryparent)
+garryhider:Hide()
+
 function Squeenix:HideButtons()
 	if self.db.hideMinimapZoom then
 		MinimapZoomIn:Hide()
@@ -53,6 +57,12 @@ function Squeenix:HideButtons()
 	else
 		MiniMapInstanceDifficulty.Show = diffshow
 		MiniMapInstanceDifficulty_OnEvent(MiniMapInstanceDifficulty)
+	end
+
+	if self.db.hideGarrisonLandingPageMinimapButton then
+		GarrisonLandingPageMinimapButton:SetParent(garryhider)
+	else
+		GarrisonLandingPageMinimapButton:SetParent(garryparent)
 	end
 
 	for name in pairs(frames) do
