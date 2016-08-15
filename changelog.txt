@@ -1,77 +1,102 @@
-6.0.0.20-Beta
-    Move and resize GarrisonLandingPageMinimapButton (thanks DArcMattr)
-    add option to hide garrison screen button (thanks DArcMattr)
+### 7.0.0.21-Beta
 
-5.0.1.19-Release
-    Tagging stable version
+* Hide garrison button differently
+* Remove about panel
 
-5.0.1.18-Beta
-    5.0 updates (thanks washu214 and DArcMattr)
-    Fix time formatting
-    Add time to daily reset to the clock LDB tooltip
 
-4.2.0.17-Beta
-    Fix border dropdown
+### 6.0.0.20-Beta
 
-4.2.0.16-Beta
-    Update for new jumbo config panels
+* Move and resize GarrisonLandingPageMinimapButton (thanks DArcMattr)
+* add option to hide garrison screen button (thanks DArcMattr)
 
-4.1.0.15-Release
-    Tagging stable version
+### 5.0.1.19-Release
 
-4.0.0.14-Beta
-    Fix button hiding bug for people that don't use AddonLoader... those poor bastards.
+* Tagging stable version
 
-4.0.0.13-Beta
-    4.0 fixes
-    Clock is no longer hidden by the default UI
-    Use new map button texture, and position the buggerer betterer
-    Position new guild instance frame
-    Fix MiniMapInstanceDifficulty anchor
+### 5.0.1.18-Beta
 
-3.3.0.12-Release
-    SPECIAL FFXIII EDITION!
-    Reset mask on reloadui, to avoid AddonLoader delayed-load oddities
-    Add instance difficulty toggler
-    Add clock toggle button
+* 5.0 updates (thanks washu214 and DArcMattr)
+* Fix time formatting
+* Add time to daily reset to the clock LDB tooltip
 
-3.2.0.11-Release
-    Patch 3.3 compatability
+### 4.2.0.17-Beta
 
-3.2.0.10-Release
-    That should be a data source
-    Embed update
+* Fix border dropdown
 
-3.0.2.9-Release
-    Add support for calendar to LDB feed
-    Rename day/time checkbox in hide button config
-    Remove 2.4.3 compat
+### 4.2.0.16-Beta
 
-3.0.1.8-Release
-    Update for wrath build 8962 config panel breakage
-    Embed update
+* Update for new jumbo config panels
 
-3.0.1.7-Release
-    Load Blizzard_TimeManager when needed
-    Blizzy memory leak has been fixed in Wrath
-    Fix config subpanel order
+### 4.1.0.15-Release
 
-3.0.1.6-Release
-    Fix dropdown in config panel on Wrath
-    Tweak GameTimeFrame location
+* Tagging stable version
 
-3.0.1.5-Release
-    Fix stupid time thing, why the hell does Blizzy manually construct the AM/PM shit?
-    For that matter, why the hell do people not use 24hr time?  Math too hard?
+### 4.0.0.14-Beta
 
-3.0.1.4-Beta
-    Update tekKonfig to live+beta version
+* Fix button hiding bug for people that don't use AddonLoader... those poor bastards.
 
-3.0.1.3-Beta
-    Fucking git-submodule
+### 4.0.0.13-Beta
 
-3.0.1.2-Beta
-    Update tekKonfig for wrath
-    Forcefully fix Blizzard's icky GameTime_GetLocalTime function
-    Add LDB feed for the new clock
-    Add LDB quicklaunch button
+* 4.0 fixes
+* Clock is no longer hidden by the default UI
+* Use new map button texture, and position the buggerer betterer
+* Position new guild instance frame
+* Fix MiniMapInstanceDifficulty anchor
+
+### 3.3.0.12-Release
+
+* SPECIAL FFXIII EDITION!
+* Reset mask on reloadui, to avoid AddonLoader delayed-load oddities
+* Add instance difficulty toggler
+* Add clock toggle button
+
+### 3.2.0.11-Release
+
+* Patch 3.3 compatability
+
+### 3.2.0.10-Release
+
+* That should be a data source
+* Embed update
+
+### 3.0.2.9-Release
+
+* Add support for calendar to LDB feed
+* Rename day/time checkbox in hide button config
+* Remove 2.4.3 compat
+
+### 3.0.1.8-Release
+
+* Update for wrath build 8962 config panel breakage
+* Embed update
+
+### 3.0.1.7-Release
+
+* Load Blizzard_TimeManager when needed
+* Blizzy memory leak has been fixed in Wrath
+* Fix config subpanel order
+
+### 3.0.1.6-Release
+
+* Fix dropdown in config panel on Wrath
+* Tweak GameTimeFrame location
+
+### 3.0.1.5-Release
+
+* Fix stupid time thing, why the hell does Blizzy manually construct the AM/PM shit?
+* For that matter, why the hell do people not use 24hr time?  Math too hard?
+
+### 3.0.1.4-Beta
+
+* Update tekKonfig to live+beta version
+
+### 3.0.1.3-Beta
+
+* Fucking git-submodule
+
+### 3.0.1.2-Beta
+
+* Update tekKonfig for wrath
+* Forcefully fix Blizzard's icky GameTime_GetLocalTime function
+* Add LDB feed for the new clock
+* Add LDB quicklaunch button
