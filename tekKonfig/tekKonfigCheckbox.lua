@@ -11,7 +11,7 @@ local function ShowTooltip(self)
 		GameTooltip:SetText(self.tiptext, nil, nil, nil, nil, true)
 	end
 end
-local function OnClick(self) PlaySound(self:GetChecked() and "igMainMenuOptionCheckBoxOn" or "igMainMenuOptionCheckBoxOff") end
+local function OnClick(self) PlaySound(self:GetChecked() and SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON or SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_OFF) end
 
 
 -- Creates a checkbox.
