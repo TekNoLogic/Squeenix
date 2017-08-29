@@ -1,4 +1,4 @@
-## Interface: 70000
+## Interface: 70300
 
 ## Title: Squeenix
 ## Notes: Square Minimap and more

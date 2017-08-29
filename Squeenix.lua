@@ -117,7 +117,7 @@ local timeobj = LibStub:GetLibrary("LibDataBroker-1.1"):NewDataObject("BlizzCloc
 		else
 			if not IsAddOnLoaded("Blizzard_TimeManager") then LoadAddOn("Blizzard_TimeManager") end
 			if TimeManagerClockButton.alarmFiring then
-				PlaySound("igMainMenuQuit")
+				PlaySound(SOUNDKIT.IG_MAINMENU_QUIT)
 				TimeManager_TurnOffAlarm()
 			else TimeManager_Toggle() end
 		end
